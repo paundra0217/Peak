@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class Stamina : MonoBehaviour
 {
+    [SerializeField] private float STP = 100f;
+
+    private float defaultSTP;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        defaultSTP = STP;    
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetStamina(int stp)
     {
-        
+        STP = stp;
+    }
+
+    public void ResetStamina()
+    {
+        STP = defaultSTP;
+    }
+
+    public float GetStamina()
+    {
+        return STP;
     }
 }

@@ -19,7 +19,7 @@ public class PlayerInput : MonoBehaviour
     {
         movement.SetDirection(Input.GetAxisRaw("Horizontal"));
 
-        if (Input.GetKeyDown(KeyCode.Space)) jump.Jump();
+        if (Input.GetKey(KeyCode.Space)) jump.Jump();
 
         if (Input.GetKeyDown(KeyCode.Q)) jump.Soar();
 

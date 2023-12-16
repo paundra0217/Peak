@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class HarmfulObject : MonoBehaviour
+public abstract class HarmfulObject : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private float Damage;
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        
+        OnContact(collision);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public abstract void OnContact(Collision2D collision);
 }
