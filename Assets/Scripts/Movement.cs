@@ -20,17 +20,18 @@ public class Movement : MonoBehaviour
 
     public void SetDirection(float direction)
     {
-        Vector2 targetVelocity = rb2.velocity;
-
         //float currentSpeed = gc.IsGrounded() ? speed : speed / 2f;
 
-        if (gc.IsGrounded() || direction != 0) lastDirection = direction;
-
-        targetVelocity.x = lastDirection * speed;
+        //if (gc.IsGrounded() || direction != 0) lastDirection = direction;
 
         //if (direction > 0) transform.rotation = Quaternion.Euler(0, 0, 0);
         //else if (direction < 0) transform.rotation = Quaternion.Euler(0, 180, 0);
 
-        rb2.velocity = Vector2.Lerp(rb2.velocity, targetVelocity, Time.deltaTime * 20f);
+        float xVel = direction * speed;
+
+        //Rotate Sprite
+
+        Vector2 targetVelocity = new Vector2(xVel, rb2.velocity.y);
+        rb2.velocity = Vector2.Lerp(rb2.velocity, targetVelocity, Time.deltaTime * 10f);
     }
 }
