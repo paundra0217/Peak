@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] private float speed = 20;
+    //[SerializeField] private float speed = 20;
 
     private Rigidbody2D rb2;
+    private PlayerSpeed speed;
     private GroundCheck gc;
+    private float direction;
     private float lastDirection;
 
     // Start is called before the first frame update
     void Awake()
     {
         rb2 = GetComponent<Rigidbody2D>();
+        speed = GetComponent<PlayerSpeed>();
         gc = transform.Find("GroundCheck").GetComponent<GroundCheck>();
         rb2.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
@@ -27,7 +30,7 @@ public class Movement : MonoBehaviour
         //if (direction > 0) transform.rotation = Quaternion.Euler(0, 0, 0);
         //else if (direction < 0) transform.rotation = Quaternion.Euler(0, 180, 0);
 
-        float xVel = direction * speed;
+        float xVel = direction * speed.GetSpeed();
 
         //Rotate Sprite
 

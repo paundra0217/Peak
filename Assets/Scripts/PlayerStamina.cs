@@ -2,7 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Stamina : MonoBehaviour
+public enum PlayerAction
+{
+    
+}
+
+public class PlayerStamina : MonoBehaviour
 {
     [SerializeField] private float STP = 100f;
 
@@ -14,7 +19,7 @@ public class Stamina : MonoBehaviour
         defaultSTP = STP;    
     }
 
-    public void SetStamina(int stp)
+    public void SetStamina(float stp)
     {
         STP = stp;
     }
@@ -27,5 +32,10 @@ public class Stamina : MonoBehaviour
     public float GetStamina()
     {
         return STP;
+    }
+
+    public void DepleteStamina()
+    {
+
     }
 }

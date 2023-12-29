@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerSpeed : MonoBehaviour
 {
-    [SerializeField] private float Speed;
+    [SerializeField] private float Speed = 100f;
 
     private float defaultSpeed;
 
@@ -14,7 +14,7 @@ public class PlayerSpeed : MonoBehaviour
         defaultSpeed = Speed;
     }
 
-    public void SetSpeed(int speed)
+    public void SetSpeed(float speed)
     {
         Speed = speed;
     }

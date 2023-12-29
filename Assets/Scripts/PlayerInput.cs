@@ -5,32 +5,47 @@ using UnityEngine;
 public class PlayerInput : MonoBehaviour
 {
     private Movement movement;
-    private Jumping jump;
+    private Jump jump;
 
     // Start is called before the first frame update
     void Awake()
     {
         movement = GetComponent<Movement>();
-        jump = GetComponent<Jumping>(); 
+        jump = GetComponent<Jump>(); 
     }
 
     // Update is called once per frame
     void Update()
     {
-        movement.SetDirection(Input.GetAxisRaw("Horizontal"));
-
-        if (Input.GetKey(KeyCode.Space)) jump.Jump();
-
-        if (Input.GetKeyDown(KeyCode.Q)) jump.Soar();
-
-        if (Input.GetKeyDown(KeyCode.I))
+        if (GameManager.Instance.GetStatus() == GameStatus.DIALOG)
         {
-            // Open Inventory
-        }
-
-        if (Input.GetKeyDown(KeyCode.E))
+            if (Input.anyKeyDown)
+            {
+                Debug.Log("Next Story Please");
+            }
+        } 
+        else
         {
-            // Interact
+            movement.SetDirection(Input.GetAxisRaw("Horizontal"));
+
+            if (Input.GetKey(KeyCode.Space)) jump.DoJump();
+
+            if (Input.GetKeyDown(KeyCode.Q)) jump.DoSoar();
+
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                // Open Inventory
+            }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                // Interact
+            }
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                GameManager.Instance.TestFunction();
+            }
         }
     }
 }
