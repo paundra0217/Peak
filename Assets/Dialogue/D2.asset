@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a398d29db13c2384b927759931e17fa2, type: 3}
+  m_Name: D2
+  m_EditorClassIdentifier: 
+  dialogue:
+  - characterName: Satria
+    dialogueContent: "Finally, I\u2019ve arrived!! Chara town, the small town of
+      joy, the safe haven of climbers beneath the mountain of angels Seraphim mountain.
+      This is the beginning of my journey."
+  - characterName: Satria
+    dialogueContent: "Though, it sure feels quiet and empty here. Looks like this
+      is what\u2019s become of the so-called town of joy."
+  - characterName: Satria
+    dialogueContent: I should look for more information, who knows I can find someone
+      around here.
+  endDialogueEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  nextDialogueContent: {fileID: 0}

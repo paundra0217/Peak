@@ -8,7 +8,8 @@ public enum GameStatus
     LOBBY,
     SETTINGS,
     INGAME,
-    DIALOG,
+    DIALOGUE,
+    TRANSITION,
     SELECTION,
     PAUSE,
     DEATH
@@ -50,9 +51,19 @@ public class GameManager : MonoBehaviour
         Physics2D.gravity = new Vector2(0, -gravityScale);
     }
 
+    private void Start()
+    {
+        DialogueManager.Instance.StartDialogue("D3_1");
+    }
+
     public GameStatus GetStatus()
     {
         return status;
+    }
+
+    public void ChangeStatus(GameStatus newStatus)
+    {
+        status = newStatus;
     }
 
     public void TestFunction()
@@ -93,7 +104,7 @@ public class GameManager : MonoBehaviour
         print("Player dead");
     }
 
-    public void DoDialog()
+    public void DoTimecard(string message)
     {
 
     }

@@ -17,12 +17,10 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance.GetStatus() == GameStatus.DIALOG)
+        if (GameManager.Instance.GetStatus() == GameStatus.DIALOGUE)
         {
             if (Input.anyKeyDown)
-            {
-                Debug.Log("Next Story Please");
-            }
+                DialogueManager.Instance.ChangeDialogue();
         } 
         else
         {
@@ -31,16 +29,6 @@ public class PlayerInput : MonoBehaviour
             if (Input.GetKey(KeyCode.Space)) jump.DoJump();
 
             if (Input.GetKeyDown(KeyCode.Q)) jump.DoSoar();
-
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                // Open Inventory
-            }
-
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                // Interact
-            }
 
             if (Input.GetKeyDown(KeyCode.R))
             {

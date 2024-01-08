@@ -9,6 +9,8 @@ public class Movement : MonoBehaviour
     private Rigidbody2D rb2;
     private PlayerSpeed speed;
     private GroundCheck gc;
+    private Animator animator;
+    private SpriteRenderer sr;
     private float direction;
     private float lastDirection;
 
@@ -17,6 +19,8 @@ public class Movement : MonoBehaviour
     {
         rb2 = GetComponent<Rigidbody2D>();
         speed = GetComponent<PlayerSpeed>();
+        animator = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
         gc = transform.Find("GroundCheck").GetComponent<GroundCheck>();
         rb2.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
@@ -30,11 +34,16 @@ public class Movement : MonoBehaviour
         //if (direction > 0) transform.rotation = Quaternion.Euler(0, 0, 0);
         //else if (direction < 0) transform.rotation = Quaternion.Euler(0, 180, 0);
 
+        animator.SetFloat("Speed", Mathf.Abs(direction));
         float xVel = direction * speed.GetSpeed();
 
-        //Rotate Sprite
+        // Flip sprite
+        if (direction != 0)
+            sr.flipX = direction < 0f;
+
+        Vector2 Vec2D0 = Vector2.zero;
 
         Vector2 targetVelocity = new Vector2(xVel, rb2.velocity.y);
-        rb2.velocity = Vector2.Lerp(rb2.velocity, targetVelocity, Time.deltaTime * 10f);
+        rb2.velocity = Vector2.SmoothDamp(rb2.velocity, targetVelocity, ref Vec2D0, 0.015f);
     }
 }
