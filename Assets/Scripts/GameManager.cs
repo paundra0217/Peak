@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public enum GameStatus
     SETTINGS,
     INGAME,
     DIALOGUE,
-    TRANSITION,
+    TRANSITION, //jika lg dalam animasi anything (ga cuma transition)
     SELECTION,
     PAUSE,
     DEATH
@@ -25,10 +26,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float defaultPlayerStamina = 100f;
 
     [SerializeField] private GameStatus status;
+    [SerializeField] private CinemachineVirtualCamera CinemachineCamera;
 
     private float currentPlayerHealth;
     private float currentPlayerSpeed;
     private float currentPlayerStamina;
+
+    private string InteractableAreaName;
 
     private static GameManager _instance;
     public static GameManager Instance
@@ -48,13 +52,14 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+        DontDestroyOnLoad(gameObject);
         Physics2D.gravity = new Vector2(0, -gravityScale);
     }
 
-    private void Start()
-    {
-        DialogueManager.Instance.StartDialogue("D3_1");
-    }
+    //private void Start()
+    //{
+    //    DialogueManager.Instance.StartDialogue("D3_1");
+    //}
 
     public GameStatus GetStatus()
     {
@@ -64,6 +69,11 @@ public class GameManager : MonoBehaviour
     public void ChangeStatus(GameStatus newStatus)
     {
         status = newStatus;
+    }
+
+    public bool CompareStatus(GameStatus status)
+    {
+        return this.status == status;
     }
 
     public void TestFunction()
@@ -104,8 +114,13 @@ public class GameManager : MonoBehaviour
         print("Player dead");
     }
 
-    public void DoTimecard(string message)
+    public void SetInteractableArea(string name)
     {
+        InteractableAreaName = name;
+    }
 
+    public void InteractItem()
+    {
+        if (InteractableAreaName == null) return;
     }
 }
