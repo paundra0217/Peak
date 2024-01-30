@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Town.unity
     guid: 61c2a020ee8f40444bff283c339591ae
   - enabled: 1
-    path: Assets/Scenes/Climbing.unity
+    path: Assets/Scenes/Town.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}

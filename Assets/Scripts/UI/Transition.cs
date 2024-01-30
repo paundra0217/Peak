@@ -11,6 +11,8 @@ public class TransitionSet
     public string setName;
     public string message;
     public float duration;
+    public bool onlyTriggeredOnce;
+    public bool isAlreadyTriggered;
     public bool continueDialogueAfterTransition;
     public UnityEvent EventAfterTransition;
     public UnityEvent EventAfterTransitionAnimation;
@@ -53,6 +55,15 @@ public class Transition : MonoBehaviour
             Debug.LogErrorFormat("{0} is not found.", transitionSetName);
             return;
         }
+
+        if (selectedSet.isAlreadyTriggered)
+        {
+            Debug.LogWarningFormat("{0} cannot be triggered because already been triggered and has been set to triggered once", selectedSet.setName);
+            return;
+        }
+
+        if (selectedSet.onlyTriggeredOnce)
+            selectedSet.isAlreadyTriggered = true;
 
         gameObject.SetActive(true);
         GameManager.Instance.ChangeStatus(GameStatus.TRANSITION);

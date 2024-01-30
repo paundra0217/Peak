@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -9,8 +7,9 @@ public class Movement : MonoBehaviour
     private GroundCheck gc;
     private Animator animator;
     private SpriteRenderer sr;
-    private float direction;
-    private float lastDirection;
+    private float currentDirection;
+    private bool currentlyMoving;
+    //private float lastDirection;
 
     // Start is called before the first frame update
     void Awake()
@@ -21,6 +20,46 @@ public class Movement : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         gc = transform.Find("GroundCheck").GetComponent<GroundCheck>();
         rb2.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    private void Update()
+    {
+        if (!GameManager.Instance.CompareStatus(GameStatus.DEFAULT))
+            StopWalking();
+
+        PlayRunningSound();
+    }
+
+    private void PlayRunningSound()
+    {
+        if (!gc.IsGrounded())
+        {
+            AudioController.Instance.StopSFX("Run");
+            currentlyMoving = false;
+
+            return;
+        }
+
+        if (Mathf.Abs(currentDirection) == 1f && !currentlyMoving)
+        {
+            AudioController.Instance.PlaySFX("Run");
+            currentlyMoving = true;
+        }
+        else if (Mathf.Abs(currentDirection) == 0f && currentlyMoving)
+        {
+            AudioController.Instance.StopSFX("Run");
+            currentlyMoving = false;
+        }
+    }
+
+    private void StopWalking()
+    {
+        currentlyMoving = false;
+        AudioController.Instance.StopSFX("Run");
+        currentDirection = 0f;
+        rb2.velocity = Vector2.zero;
+        animator.SetFloat("Speed", 0f);
+
     }
 
     public void SetDirection(float direction)
@@ -34,13 +73,10 @@ public class Movement : MonoBehaviour
 
         Vector2 Vec2D0 = Vector2.zero;
 
-        if (GameManager.Instance.CompareStatus(GameStatus.TRANSITION))
+        if (GameManager.Instance.CompareStatus(GameStatus.DEFAULT))
         {
-            rb2.constraints = RigidbodyConstraints2D.FreezePosition;
-            animator.SetFloat("Speed", 0f);
-        }
-        else
-        {
+            currentDirection = direction;
+
             animator.SetFloat("Speed", Mathf.Abs(direction));
             float xVel = direction * speed.GetSpeed();
 

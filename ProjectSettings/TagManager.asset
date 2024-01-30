@@ -6,6 +6,20 @@ TagManager:
   tags:
   - Ground
   - InteractableArea
+  - 200
+  - 400
+  - 600
+  - 800
+  - 1000
+  - 1300
+  - 1600
+  - 2000
+  - 2500
+  - 2800
+  - 3100
+  - 3500
+  - 4000
+  - 4600
   layers:
   - Default
   - TransparentFX

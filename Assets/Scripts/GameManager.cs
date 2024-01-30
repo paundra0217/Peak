@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float defaultPlayerStamina = 100f;
 
     [SerializeField] private GameStatus status;
-    [SerializeField] private CinemachineVirtualCamera CinemachineCamera;
+    private CinemachineVirtualCamera CinemachineCamera;
 
     private float currentPlayerHealth;
     private float currentPlayerSpeed;
@@ -107,10 +107,12 @@ public class GameManager : MonoBehaviour
         p.GetComponent<PlayerHealth>().SetDefaultHP(defaultPlayerHealth);
         p.GetComponent<PlayerStamina>().SetStamina(defaultPlayerStamina);
         p.GetComponent<PlayerSpeed>().SetSpeed(defaultPlayerSpeed);
+        CinemachineCamera = p.GetComponent<CinemachineVirtualCamera>();
     }
 
     public void PlayerDeath()
     {
+        CinemachineCamera.Follow = null;
         print("Player dead");
     }
 

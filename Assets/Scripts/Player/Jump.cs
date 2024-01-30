@@ -1,22 +1,27 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Jump : MonoBehaviour
 {
     [SerializeField] private float jumpPower = 15f;
     [SerializeField] private float soarMultiplier = 1.6f;
+    [SerializeField] private float minimumFallTime = 0.5f;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask PlatformLayer;
 
     private float soarPower;
     private bool alreadyJumped = false;
     private bool alreadySoared = false;
+    private bool isFalling = false;
+    private bool currentlyGrounded;
+    private float fallTime;
     private Rigidbody2D rb2;
+    private Collider2D cl2;
     private GroundCheck gc;
     private Animator animator;
 
     private void Awake()
     {
+        cl2 = GetComponent<Collider2D>();
         rb2 = GetComponent<Rigidbody2D>();
         gc = transform.Find("GroundCheck").GetComponent<GroundCheck>();
         animator = GetComponent<Animator>();
@@ -25,20 +30,39 @@ public class Jump : MonoBehaviour
 
     private void Update()
     {
-        if(gc.IsGrounded() && alreadyJumped) alreadyJumped = false;
-        if(gc.IsGrounded() && alreadySoared) alreadySoared = false;
+        bool previouslyGrounded = currentlyGrounded;
+        currentlyGrounded = IsGrounded();
+
+        if (currentlyGrounded && alreadyJumped) alreadyJumped = false;
+        if (currentlyGrounded && alreadySoared) alreadySoared = false;
 
         if (alreadySoared)
             animator.SetBool("IsSoaring", rb2.velocity.y > 0);
         else
             animator.SetBool("IsJumping", rb2.velocity.y > 0);
 
-        animator.SetBool("IsGrounded", gc.IsGrounded());
+        animator.SetBool("IsGrounded", currentlyGrounded);
+
+        if (rb2.velocity.y < 0)
+            fallTime += Time.deltaTime;
+
+        if (!previouslyGrounded && currentlyGrounded)
+        {
+            Debug.LogFormat("Fall time: {0}", fallTime);
+            Debug.LogFormat("Do Damage: {0}", fallTime > minimumFallTime);
+
+            if (fallTime > minimumFallTime)
+            {
+                CalculateDamage(fallTime);
+            }
+
+            fallTime = 0;
+        }
     }
 
     public void DoJump()
     {
-        if (!gc.IsGrounded()) return;
+        if (rb2.velocity.y < 0 || alreadyJumped) return;
 
         alreadyJumped = true;
 
@@ -49,7 +73,7 @@ public class Jump : MonoBehaviour
 
     public void DoSoar()
     {
-        if (gc.IsGrounded() || alreadySoared || !alreadyJumped) return;
+        if (currentlyGrounded || alreadySoared || !alreadyJumped) return;
         animator.SetBool("IsJumping", false);
 
         alreadySoared = true;
@@ -59,8 +83,14 @@ public class Jump : MonoBehaviour
         rb2.velocity = velocity;
     }
 
-    static public void TriggerWalljump()
+    private void CalculateDamage(float velocityRate)
     {
+        if (alreadySoared) return;
+        print((velocityRate - minimumFallTime) / 1f * 150f);
+    }
 
+    private bool IsGrounded()
+    {
+        return Physics2D.BoxCast(cl2.bounds.center, cl2.bounds.size, 0f, Vector2.down, .1f, PlatformLayer);
     }
 }
