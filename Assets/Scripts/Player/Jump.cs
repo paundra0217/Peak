@@ -11,17 +11,16 @@ public class Jump : MonoBehaviour
     private float soarPower;
     private bool alreadyJumped = false;
     private bool alreadySoared = false;
-    private bool isFalling = false;
     private bool currentlyGrounded;
     private float fallTime;
     private Rigidbody2D rb2;
-    private Collider2D cl2;
+    //private Collider2D cl2;
     private GroundCheck gc;
     private Animator animator;
 
     private void Awake()
     {
-        cl2 = GetComponent<Collider2D>();
+        //cl2 = GetComponent<Collider2D>();
         rb2 = GetComponent<Rigidbody2D>();
         gc = transform.Find("GroundCheck").GetComponent<GroundCheck>();
         animator = GetComponent<Animator>();
@@ -31,7 +30,7 @@ public class Jump : MonoBehaviour
     private void Update()
     {
         bool previouslyGrounded = currentlyGrounded;
-        currentlyGrounded = IsGrounded();
+        currentlyGrounded = gc.IsGrounded();
 
         if (currentlyGrounded && alreadyJumped) alreadyJumped = false;
         if (currentlyGrounded && alreadySoared) alreadySoared = false;
@@ -89,8 +88,8 @@ public class Jump : MonoBehaviour
         print((velocityRate - minimumFallTime) / 1f * 150f);
     }
 
-    private bool IsGrounded()
-    {
-        return Physics2D.BoxCast(cl2.bounds.center, cl2.bounds.size, 0f, Vector2.down, .1f, PlatformLayer);
-    }
+    //public bool IsGrounded()
+    //{
+    //    return Physics2D.BoxCast(cl2.bounds.center, cl2.bounds.size, 0f, Vector2.down, .25f, PlatformLayer);
+    //}
 }
