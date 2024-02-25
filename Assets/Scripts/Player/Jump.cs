@@ -17,6 +17,7 @@ public class Jump : MonoBehaviour
     //private Collider2D cl2;
     private GroundCheck gc;
     private Animator animator;
+    private PlayerHealth playerhealth;
 
     private void Awake()
     {
@@ -24,13 +25,13 @@ public class Jump : MonoBehaviour
         rb2 = GetComponent<Rigidbody2D>();
         gc = transform.Find("GroundCheck").GetComponent<GroundCheck>();
         animator = GetComponent<Animator>();
+        playerhealth = GetComponent<PlayerHealth>();
         soarPower = jumpPower * soarMultiplier;
     }
 
     private void Update()
     {
-        bool previouslyGrounded = currentlyGrounded;
-        currentlyGrounded = gc.IsGrounded();
+        HandleFallDamage();
 
         if (currentlyGrounded && alreadyJumped) alreadyJumped = false;
         if (currentlyGrounded && alreadySoared) alreadySoared = false;
@@ -41,16 +42,21 @@ public class Jump : MonoBehaviour
             animator.SetBool("IsJumping", rb2.velocity.y > 0);
 
         animator.SetBool("IsGrounded", currentlyGrounded);
+    }
 
-        if (rb2.velocity.y < 0)
+    private void HandleFallDamage()
+    {
+        bool previouslyGrounded = currentlyGrounded;
+        currentlyGrounded = gc.IsGrounded();
+
+        if (rb2.velocity.y < 0 && !currentlyGrounded)
             fallTime += Time.deltaTime;
 
         if (!previouslyGrounded && currentlyGrounded)
         {
-            Debug.LogFormat("Fall time: {0}", fallTime);
-            Debug.LogFormat("Do Damage: {0}", fallTime > minimumFallTime);
+            bool doDamage = (fallTime > minimumFallTime) && !alreadySoared;
 
-            if (fallTime > minimumFallTime)
+            if (doDamage)
             {
                 CalculateDamage(fallTime);
             }
@@ -64,7 +70,9 @@ public class Jump : MonoBehaviour
         if (rb2.velocity.y < 0 || alreadyJumped) return;
 
         alreadyJumped = true;
+        fallTime = 0;
 
+        AudioController.Instance.PlaySFX("Jump");
         Vector2 velocity = rb2.velocity;
         velocity.y = jumpPower;
         rb2.velocity = velocity;
@@ -76,7 +84,9 @@ public class Jump : MonoBehaviour
         animator.SetBool("IsJumping", false);
 
         alreadySoared = true;
+        fallTime = 0;
 
+        AudioController.Instance.PlaySFX("Soar");
         Vector2 velocity = rb2.velocity;
         velocity.y = soarPower;
         rb2.velocity = velocity;
@@ -85,7 +95,10 @@ public class Jump : MonoBehaviour
     private void CalculateDamage(float velocityRate)
     {
         if (alreadySoared) return;
-        print((velocityRate - minimumFallTime) / 1f * 150f);
+        float damageTaken = (velocityRate - minimumFallTime) / 1f * 150f;
+        print(damageTaken);
+
+        playerhealth.TakeDamage(damageTaken);
     }
 
     //public bool IsGrounded()

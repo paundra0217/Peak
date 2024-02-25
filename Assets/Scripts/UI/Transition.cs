@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class TransitionSet
@@ -43,6 +44,7 @@ public class Transition : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+        print(_instance);
         transitionText = transform.Find("TransitionText").GetComponent<TMP_Text>();
         animator = GetComponent<Animator>();
     }
@@ -68,6 +70,12 @@ public class Transition : MonoBehaviour
         gameObject.SetActive(true);
         GameManager.Instance.ChangeStatus(GameStatus.TRANSITION);
         StartCoroutine("ProcessTransition");
+    }
+
+    public void DoGameOver()
+    {
+        gameObject.SetActive(true);
+        StartCoroutine("ProcessGameOverScreen");
     }
 
     IEnumerator ProcessTransition()
@@ -96,5 +104,14 @@ public class Transition : MonoBehaviour
             GameManager.Instance.ChangeStatus(GameStatus.DEFAULT);
 
         gameObject.SetActive(false);
+    }
+
+    IEnumerator ProcessGameOverScreen()
+    {
+        animator.SetBool("IsTransitioning", true);
+
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+
+        SceneManager.LoadScene("GameOver");
     }
 }

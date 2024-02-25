@@ -7,6 +7,7 @@ public class Movement : MonoBehaviour
     private GroundCheck gc;
     private Animator animator;
     private SpriteRenderer sr;
+    private PlayerHealth playerHealth;
     private float currentDirection;
     private bool currentlyMoving;
     //private float lastDirection;
@@ -18,6 +19,7 @@ public class Movement : MonoBehaviour
         speed = GetComponent<PlayerSpeed>();
         animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+        playerHealth = GetComponent<PlayerHealth>();
         gc = transform.Find("GroundCheck").GetComponent<GroundCheck>();
         rb2.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
@@ -73,7 +75,7 @@ public class Movement : MonoBehaviour
 
         Vector2 Vec2D0 = Vector2.zero;
 
-        if (GameManager.Instance.CompareStatus(GameStatus.DEFAULT))
+        if (GameManager.Instance.CompareStatus(GameStatus.DEFAULT) && playerHealth.GetHealth() > 0.1f)
         {
             currentDirection = direction;
 

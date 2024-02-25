@@ -18,6 +18,7 @@ class AudioObject
     [Range(0f, 1f)] public float AudioVolume = 1f;
     public AudioSource Source;
     public bool Looping;
+    public bool PlayOnAwake;
 }
 
 public class AudioController : MonoBehaviour
@@ -44,17 +45,25 @@ public class AudioController : MonoBehaviour
 
     void Awake()
     {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         _instance = this;
+
         DontDestroyOnLoad(gameObject);
 
-        foreach(var a in audios)
+        foreach (var a in audios)
         {
             AudioSource aSource = gameObject.AddComponent<AudioSource>();
 
-            aSource.clip = a.AudioClip;
+            aSource.clip = a.AudioClip; 
             aSource.loop = a.Looping;
             aSource.pitch = a.AudioPitch;
             aSource.volume = a.AudioVolume;
+            aSource.playOnAwake = a.PlayOnAwake;
 
             switch (a.AudioType)
             {

@@ -47,6 +47,6 @@ MonoBehaviour:
   player: {fileID: 713210844573813373, guid: be3a7df15d108a346968bc79ac5d992a, type: 3}
   gravityScale: 60
   defaultPlayerHealth: 100
-  defaultPlayerSpeed: 100
+  defaultPlayerSpeed: 6.5
   defaultPlayerStamina: 100
   status: 0

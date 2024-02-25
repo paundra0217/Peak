@@ -33,6 +33,7 @@ public class InteractableManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+        print(_instance);
     }
 
     public void SetInteractableAreaName(string name)
@@ -59,6 +60,15 @@ public class InteractableManager : MonoBehaviour
     public void AutoTriggerInteractable(string name)
     {
         Interactable ie = interactables.FirstOrDefault(i => i.InteractableName == name);
+        if (ie == null)
+            Debug.LogError("Interaction is not valid");
+
+        ie.InteractableEvent.Invoke();
+    }
+
+    public void TriggerGameOver()
+    {
+        Interactable ie = interactables.FirstOrDefault(i => i.InteractableName == "GameOverScreen");
         if (ie == null)
             Debug.LogError("Interaction is not valid");
 

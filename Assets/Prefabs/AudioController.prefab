@@ -54,6 +54,7 @@ MonoBehaviour:
     AudioVolume: 1
     Source: {fileID: 0}
     Looping: 1
+    PlayOnAwake: 0
   - AudioName: Run
     AudioType: 1
     AudioClip: {fileID: 8300000, guid: 23fee9f03c1a0ec4c99b3861ab85491d, type: 3}
@@ -61,3 +62,44 @@ MonoBehaviour:
     AudioVolume: 1
     Source: {fileID: 0}
     Looping: 1
+    PlayOnAwake: 0
+  - AudioName: Main
+    AudioType: 0
+    AudioClip: {fileID: 8300000, guid: 593d231fb1c05e4458d1e51c04b2a969, type: 3}
+    AudioPitch: 1
+    AudioVolume: 1
+    Source: {fileID: 0}
+    Looping: 1
+    PlayOnAwake: 1
+  - AudioName: Town
+    AudioType: 0
+    AudioClip: {fileID: 8300000, guid: 4e380e54e0c2e4843b5efaf4f8dfb47e, type: 3}
+    AudioPitch: 1
+    AudioVolume: 1
+    Source: {fileID: 0}
+    Looping: 1
+    PlayOnAwake: 0
+  - AudioName: Credit
+    AudioType: 0
+    AudioClip: {fileID: 8300000, guid: 8b7c641507054f545a366645aaab96d6, type: 3}
+    AudioPitch: 1
+    AudioVolume: 1
+    Source: {fileID: 0}
+    Looping: 1
+    PlayOnAwake: 0
+  - AudioName: Jump
+    AudioType: 1
+    AudioClip: {fileID: 8300000, guid: f632b3d1a1e5f0141920401979569b0e, type: 3}
+    AudioPitch: 1
+    AudioVolume: 1
+    Source: {fileID: 0}
+    Looping: 0
+    PlayOnAwake: 0
+  - AudioName: Soar
+    AudioType: 1
+    AudioClip: {fileID: 8300000, guid: bd40f60def718a9468210eb18a0af142, type: 3}
+    AudioPitch: 1
+    AudioVolume: 1
+    Source: {fileID: 0}
+    Looping: 0
+    PlayOnAwake: 0
