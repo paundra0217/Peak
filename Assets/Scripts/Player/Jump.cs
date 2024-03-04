@@ -59,6 +59,7 @@ public class Jump : MonoBehaviour
             if (doDamage)
             {
                 CalculateDamage(fallTime);
+                AudioController.Instance.PlaySFX("Land");
             }
 
             fallTime = 0;

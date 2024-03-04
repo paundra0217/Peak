@@ -26,6 +26,7 @@ public class Transition : MonoBehaviour
     private TransitionSet selectedSet;
     private TMP_Text transitionText;
     private Animator animator;
+    private string nextScene;
     
     private static Transition _instance;
     public static Transition Instance
@@ -67,20 +68,18 @@ public class Transition : MonoBehaviour
         if (selectedSet.onlyTriggeredOnce)
             selectedSet.isAlreadyTriggered = true;
 
-        gameObject.SetActive(true);
         GameManager.Instance.ChangeStatus(GameStatus.TRANSITION);
         StartCoroutine("ProcessTransition");
     }
 
     public void DoGameOver()
     {
-        gameObject.SetActive(true);
         StartCoroutine("ProcessGameOverScreen");
     }
 
     IEnumerator ProcessTransition()
     {
-        animator.SetBool("IsTransitioning", true);
+        animator.SetTrigger("TriggerTransition");
 
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
 
@@ -93,7 +92,7 @@ public class Transition : MonoBehaviour
         if (selectedSet.EventAfterTransition.GetPersistentEventCount() > 0)
             selectedSet.EventAfterTransition.Invoke();
 
-        animator.SetBool("IsTransitioning", false);
+        animator.SetTrigger("TriggerTransition");
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
 
         if (selectedSet.continueDialogueAfterTransition)
@@ -102,13 +101,29 @@ public class Transition : MonoBehaviour
             selectedSet.EventAfterTransitionAnimation.Invoke();
         else
             GameManager.Instance.ChangeStatus(GameStatus.DEFAULT);
+    }
 
-        gameObject.SetActive(false);
+    public void SwitchScene(string nextScene)
+    {
+        this.nextScene = nextScene;
+        StartCoroutine("ProcessSwitchScene");
+    }
+
+    IEnumerator ProcessSwitchScene()
+    {
+        GetComponent<CanvasGroup>().blocksRaycasts = true;
+        GetComponent<CanvasGroup>().interactable = true;
+
+        animator.SetTrigger("TriggerTransition");
+
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+
+        SceneManager.LoadScene(nextScene);
     }
 
     IEnumerator ProcessGameOverScreen()
     {
-        animator.SetBool("IsTransitioning", true);
+        animator.SetTrigger("TriggerTransition");
 
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
 

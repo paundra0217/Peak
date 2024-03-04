@@ -85,11 +85,11 @@ MonoBehaviour:
     AudioPitch: 1
     AudioVolume: 1
     Source: {fileID: 0}
-    Looping: 1
+    Looping: 0
     PlayOnAwake: 0
   - AudioName: Jump
     AudioType: 1
-    AudioClip: {fileID: 8300000, guid: f632b3d1a1e5f0141920401979569b0e, type: 3}
+    AudioClip: {fileID: 8300000, guid: 5a9aea698ede83040ba32c8d73135557, type: 3}
     AudioPitch: 1
     AudioVolume: 1
     Source: {fileID: 0}
@@ -97,7 +97,15 @@ MonoBehaviour:
     PlayOnAwake: 0
   - AudioName: Soar
     AudioType: 1
-    AudioClip: {fileID: 8300000, guid: bd40f60def718a9468210eb18a0af142, type: 3}
+    AudioClip: {fileID: 8300000, guid: a9d86a4ebbaa46e4eb4dd687a964da7c, type: 3}
+    AudioPitch: 1
+    AudioVolume: 1
+    Source: {fileID: 0}
+    Looping: 0
+    PlayOnAwake: 0
+  - AudioName: Land
+    AudioType: 1
+    AudioClip: {fileID: 8300000, guid: e6edea2155f4c5544ba49bff32e0778e, type: 3}
     AudioPitch: 1
     AudioVolume: 1
     Source: {fileID: 0}

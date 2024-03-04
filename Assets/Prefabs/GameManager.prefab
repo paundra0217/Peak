@@ -49,4 +49,5 @@ MonoBehaviour:
   defaultPlayerHealth: 100
   defaultPlayerSpeed: 6.5
   defaultPlayerStamina: 100
+  defaultPlayerLives: 3
   status: 0
