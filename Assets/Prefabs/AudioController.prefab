@@ -81,7 +81,7 @@ MonoBehaviour:
     PlayOnAwake: 0
   - AudioName: Credit
     AudioType: 0
-    AudioClip: {fileID: 8300000, guid: 8b7c641507054f545a366645aaab96d6, type: 3}
+    AudioClip: {fileID: 8300000, guid: 54627ec77adf5754d83fe39232cdc1ad, type: 3}
     AudioPitch: 1
     AudioVolume: 1
     Source: {fileID: 0}
@@ -110,4 +110,28 @@ MonoBehaviour:
     AudioVolume: 1
     Source: {fileID: 0}
     Looping: 0
+    PlayOnAwake: 0
+  - AudioName: Grassland
+    AudioType: 0
+    AudioClip: {fileID: 8300000, guid: deeeece3c990971468e0ba81802df82e, type: 3}
+    AudioPitch: 1
+    AudioVolume: 1
+    Source: {fileID: 0}
+    Looping: 1
+    PlayOnAwake: 0
+  - AudioName: Rockland
+    AudioType: 0
+    AudioClip: {fileID: 8300000, guid: 8f01f3182823c914eb76aeb689e6e8ac, type: 3}
+    AudioPitch: 1
+    AudioVolume: 1
+    Source: {fileID: 0}
+    Looping: 1
+    PlayOnAwake: 0
+  - AudioName: Snow
+    AudioType: 0
+    AudioClip: {fileID: 8300000, guid: bf4416440323fd34b93e7221650a4802, type: 3}
+    AudioPitch: 1
+    AudioVolume: 1
+    Source: {fileID: 0}
+    Looping: 1
     PlayOnAwake: 0

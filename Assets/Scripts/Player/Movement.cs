@@ -26,7 +26,7 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        if (!GameManager.Instance.CompareStatus(GameStatus.DEFAULT))
+        if (!GameManager.Instance.CompareStatus(GameStatus.DEFAULT) && !GameManager.Instance.CompareStatus(GameStatus.INTRO))
             StopWalking();
 
         PlayRunningSound();
@@ -75,7 +75,7 @@ public class Movement : MonoBehaviour
 
         Vector2 Vec2D0 = Vector2.zero;
 
-        if (GameManager.Instance.CompareStatus(GameStatus.DEFAULT) && playerHealth.GetHealth() > 0.1f)
+        if ((GameManager.Instance.CompareStatus(GameStatus.DEFAULT) || GameManager.Instance.CompareStatus(GameStatus.INTRO)) && playerHealth.GetHealth() > 0.1f)
         {
             currentDirection = direction;
 

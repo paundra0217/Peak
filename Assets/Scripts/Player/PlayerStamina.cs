@@ -16,12 +16,18 @@ public class PlayerStamina : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        defaultSTP = STP;    
+        //defaultSTP = STP;    
+        STP = 50f;
     }
 
     public void SetStamina(float stp)
     {
         STP = stp;
+    }
+
+    public void SetDefaultStamina(float stp)
+    {
+        defaultSTP = stp;
     }
 
     public void ResetStamina()
@@ -32,6 +38,11 @@ public class PlayerStamina : MonoBehaviour
     public float GetStamina()
     {
         return STP;
+    }
+
+    public float GetMaxStamina()
+    {
+        return defaultSTP;
     }
 
     public void DepleteStamina()

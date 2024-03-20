@@ -15,6 +15,8 @@ public class TransitionSet
     public bool onlyTriggeredOnce;
     public bool isAlreadyTriggered;
     public bool continueDialogueAfterTransition;
+    public UnityEvent EventDuringTransition;
+    public UnityEvent EventNearEndTransition;
     public UnityEvent EventAfterTransition;
     public UnityEvent EventAfterTransitionAnimation;
 }
@@ -80,14 +82,18 @@ public class Transition : MonoBehaviour
     IEnumerator ProcessTransition()
     {
         animator.SetTrigger("TriggerTransition");
-
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
 
         transitionText.text = selectedSet.message;
+        if (selectedSet.EventDuringTransition.GetPersistentEventCount() > 0)
+            selectedSet.EventDuringTransition.Invoke();
 
         yield return new WaitForSeconds(selectedSet.duration);
 
         transitionText.text = "";
+
+        if (selectedSet.EventNearEndTransition.GetPersistentEventCount() > 0)
+            selectedSet.EventNearEndTransition.Invoke();
 
         if (selectedSet.EventAfterTransition.GetPersistentEventCount() > 0)
             selectedSet.EventAfterTransition.Invoke();

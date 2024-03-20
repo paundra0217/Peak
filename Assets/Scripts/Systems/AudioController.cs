@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -16,7 +17,7 @@ class AudioObject
     public AudioClip AudioClip;
     [Range(-3f, 3f)] public float AudioPitch = 1f;
     [Range(0f, 1f)] public float AudioVolume = 1f;
-    public AudioSource Source;
+    [HideInInspector]  public AudioSource Source;
     public bool Looping;
     public bool PlayOnAwake;
 }
@@ -28,6 +29,10 @@ public class AudioController : MonoBehaviour
     //[SerializeField] private AudioObject[] BGM;
     //[SerializeField] private AudioObject[] SFX;
     [SerializeField] private AudioObject[] audios;
+
+    private AudioSource currentBGMPlaying;
+    private AudioSource nextAudioPlaying;
+    //private bool audioTransitioning;
 
     private static AudioController _instance;
     public static AudioController Instance
@@ -80,6 +85,11 @@ public class AudioController : MonoBehaviour
         }
     }
 
+    //private void Update()
+    //{
+    //    Debug.LogFormat("{0} {1} {2}", gameObject.active, gameObject.activeSelf, gameObject.activeInHierarchy);
+    //}
+
     private AudioObject SearchAudio(string audioName, AudioType type)
     {
         var audio = audios.FirstOrDefault(s => s.AudioName == audioName);
@@ -107,17 +117,36 @@ public class AudioController : MonoBehaviour
         //    else a.AObject.GetComponent<AudioSource>().Stop();
         //}
 
+        //if (audioTransitioning) return;
+
         var audio = SearchAudio(audioName, AudioType.BGM);
         if (audio == null)
             return;
 
         StopBGM();
 
+        currentBGMPlaying = audio.Source;
         audio.Source.Play();
     }
 
+    //public void SwitchBGM(string audioName)
+    //{
+    //    if (audioTransitioning) return;
+
+    //    Debug.LogWarning(gameObject.activeInHierarchy);
+
+    //    var audio = SearchAudio(audioName, AudioType.BGM);
+    //    if (audio == null)
+    //        return;
+
+    //    nextAudioPlaying = audio.Source;
+    //    StartCoroutine(FadeOut(currentBGMPlaying, 1f));
+    //}
+
     public void StopBGM()
     {
+        //if (audioTransitioning) return;
+
         //foreach (var a in BGM)
         //    a.AObject.GetComponent<AudioSource>().Stop();
 
@@ -126,10 +155,14 @@ public class AudioController : MonoBehaviour
             if (a.AudioType == AudioType.BGM)
                 a.Source.Stop();
         }
+
+        currentBGMPlaying = null;
     }
 
     public void StopBGM(string audioName)
     {
+        //if (audioTransitioning) return;
+
         //var bgm = BGM.FirstOrDefault(s => s.AudioName == audioName);
         //bgm.AObject.GetComponent<AudioSource>().Stop();
 
@@ -138,10 +171,13 @@ public class AudioController : MonoBehaviour
             return;
 
         audio.Source.Stop();
+        currentBGMPlaying = null;
     }
 
     public void PlaySFX(string audioName)
     {
+        //if (audioTransitioning) return;
+
         //var sfx = SFX.FirstOrDefault(s => s.AudioName == audioName);
         //sfx.AObject.GetComponent<AudioSource>().Play();
 
@@ -154,6 +190,8 @@ public class AudioController : MonoBehaviour
 
     public void StopSFX()
     {
+        //if (audioTransitioning) return;
+
         //foreach (var a in SFX)
         //    a.AObject.GetComponent<AudioSource>().Stop();
 
@@ -166,6 +204,8 @@ public class AudioController : MonoBehaviour
 
     public void StopSFX(string audioName)
     {
+        //if (audioTransitioning) return;
+
         //var sfx = SFX.FirstOrDefault(s => s.AudioName == audioName);
         //sfx.AObject.GetComponent<AudioSource>().Stop();
 
@@ -175,4 +215,52 @@ public class AudioController : MonoBehaviour
 
         audio.Source.Stop();
     }
+
+    //IEnumerator FadeOut(AudioSource audioSource, float FadeTime)
+    //{
+    //    audioTransitioning = true;
+
+    //    float startVolume = audioSource.volume;
+
+    //    while (audioSource.volume > 0)
+    //    {
+    //        audioSource.volume -= startVolume * Time.deltaTime / FadeTime;
+
+    //        yield return null;
+    //    }
+
+    //    audioSource.Stop();
+    //    audioSource.volume = startVolume;
+
+    //    yield return new WaitForSeconds(0.5f);
+
+    //    StartCoroutine(FadeIn(nextAudioPlaying, 1f));
+    //    StopCoroutine("FadeOut");
+    //}
+
+    //IEnumerator FadeIn(AudioSource audioSource, float FadeTime)
+    //{
+    //    float startVolume = 0.2f;
+
+    //    audioSource.volume = 0;
+    //    audioSource.Play();
+
+    //    while (audioSource.volume < 1.0f)
+    //    {
+    //        audioSource.volume += startVolume * Time.deltaTime / FadeTime;
+
+    //        yield return null;
+    //    }
+
+    //    audioSource.volume = 1f;
+
+    //    nextAudioPlaying = null;
+    //    currentBGMPlaying = audioSource;
+    //}
+
+    //private void OnDisable()
+    //{
+    //    print("Audio Controller is deactivated, activating...");
+    //    gameObject.SetActive(true);
+    //}
 }

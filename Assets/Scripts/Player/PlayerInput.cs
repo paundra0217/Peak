@@ -22,21 +22,24 @@ public class PlayerInput : MonoBehaviour
             if (Input.anyKeyDown)
                 DialogueManager.Instance.ChangeDialogue();
         } 
-        else if (GameManager.Instance.CompareStatus(GameStatus.DEFAULT))
+        else if (GameManager.Instance.CompareStatus(GameStatus.DEFAULT) || GameManager.Instance.CompareStatus(GameStatus.INTRO))
         {
             movement.SetDirection(Input.GetAxisRaw("Horizontal"));
 
-            if (Input.GetKey(KeyCode.Space)) 
-                jump.DoJump();
+            if (!GameManager.Instance.CompareStatus(GameStatus.INTRO))
+            {
+                if (Input.GetKey(KeyCode.Space))
+                    jump.DoJump();
 
-            if (Input.GetKeyDown(KeyCode.Q)) 
-                jump.DoSoar();
+                if (Input.GetKeyDown(KeyCode.Q))
+                    jump.DoSoar();
 
-            if (Input.GetKeyDown(KeyCode.E)) 
-                InteractableManager.Instance.TriggerInteractable();
+                if (Input.GetKeyDown(KeyCode.E))
+                    InteractableManager.Instance.TriggerInteractable();
 
-            if (Input.GetKeyDown(KeyCode.R))
-                GameManager.Instance.TestFunction();
+                if (Input.GetKeyDown(KeyCode.R))
+                    GameManager.Instance.TestFunction();
+            }
         }
     }
 }

@@ -7,6 +7,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float defaultHP = 100f;
     private float HP;
     private Animator animator;
+    private Collider2D collider2;
+    private Rigidbody2D rb2;
     private ParticleSystem DeathEffect;
     private ParticleSystemRenderer DeathFXRenderer;
     private SpriteRenderer playerSprite;
@@ -17,6 +19,8 @@ public class PlayerHealth : MonoBehaviour
         playerSprite = GetComponent<SpriteRenderer>();
         DeathEffect = gameObject.transform.Find("DeathEffect").GetComponent<ParticleSystem>();
         DeathFXRenderer = gameObject.transform.Find("DeathEffect").GetComponent<ParticleSystemRenderer>();
+        collider2 = GetComponent<Collider2D>();
+        rb2 = GetComponent<Rigidbody2D>();
         ResetHealth();
     }
 
@@ -58,6 +62,11 @@ public class PlayerHealth : MonoBehaviour
         return HP;
     }
 
+    public float GetMaxHealth()
+    {
+        return defaultHP;
+    }
+
     public void KillPlayer()
     {
         TakeDamage(HP);
@@ -65,6 +74,9 @@ public class PlayerHealth : MonoBehaviour
 
     IEnumerator HandleDeathAnimation()
     {
+        rb2.simulated = false;
+        collider2.enabled = false;
+
         float rotationDirection = Random.Range(-6f, 6f);
 
         var rotationModule = DeathEffect.rotationBySpeed;

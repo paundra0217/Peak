@@ -8,6 +8,8 @@ public class Interactable
 {
     public string InteractableName;
     public UnityEvent InteractableEvent;
+    public bool onlyInteractOnce;
+    [HideInInspector] public bool isAlreadyInteracted;
 }
 
 public class InteractableManager : MonoBehaviour
@@ -46,6 +48,18 @@ public class InteractableManager : MonoBehaviour
         InteractableAreaName = null;
     }
 
+    public bool CheckInteractStatus(string name)
+    {
+        Interactable ie = interactables.FirstOrDefault(i => i.InteractableName == name);
+        if (ie == null)
+            Debug.LogError("Interaction is not valid");
+
+        if (ie.onlyInteractOnce)
+            return ie.isAlreadyInteracted;
+
+        return false;
+    }
+
     public void TriggerInteractable()
     {
         if (InteractableAreaName == null) return;
@@ -53,6 +67,11 @@ public class InteractableManager : MonoBehaviour
         Interactable ie = interactables.FirstOrDefault(i => i.InteractableName == InteractableAreaName);
         if (ie == null)
             Debug.LogError("Interaction is not valid");
+
+        if (ie.isAlreadyInteracted) return;
+
+        if (ie.onlyInteractOnce)
+            ie.isAlreadyInteracted = true;
 
         ie.InteractableEvent.Invoke();
     }
