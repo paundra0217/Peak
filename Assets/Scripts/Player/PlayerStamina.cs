@@ -83,7 +83,7 @@ public class PlayerStamina : MonoBehaviour
 
     public void DepleteStamina()
     {
-        STP = STP * (1 - (0.002f * 1));
+        STP = STP * (1 - (0.0005f * 1));
         //STP = 0f;
         if (STP < 0f)
         {

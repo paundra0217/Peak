@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] private float defaultHP = 100f;
+    [SerializeField] private float defaultHP = 20f;
     private float HP;
     private Animator animator;
     private Collider2D collider2;
