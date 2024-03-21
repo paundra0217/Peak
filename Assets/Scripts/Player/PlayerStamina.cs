@@ -12,12 +12,43 @@ public class PlayerStamina : MonoBehaviour
     [SerializeField] private float STP = 100f;
 
     private float defaultSTP;
+    private float depletionRate;
+    private float cooldownDamage = 1f;
+    private int damageCount = 0;
+    private float currentCooldown;
 
     // Start is called before the first frame update
     void Awake()
     {
-        //defaultSTP = STP;    
-        STP = 50f;
+        defaultSTP = STP;
+        depletionRate = 0f;
+        currentCooldown = cooldownDamage;
+        //STP = 50f;
+    }
+
+    private void Update()
+    {
+        if (STP > 0f) return;
+        if (damageCount > 30) return;
+        if (GameManager.Instance.CompareStatus(GameStatus.DEATH)) return;
+
+        print(currentCooldown);
+        
+        if (damageCount == 30)
+        {
+            GameManager.Instance.KillPlayer();
+            damageCount++;
+        }
+        else if (currentCooldown <= 0f)
+        {
+            GameManager.Instance.TakeDamage(3);
+            damageCount++;
+            currentCooldown = cooldownDamage;
+        }
+        else
+        {
+            currentCooldown -= Time.deltaTime;
+        }
     }
 
     public void SetStamina(float stp)
@@ -45,8 +76,18 @@ public class PlayerStamina : MonoBehaviour
         return defaultSTP;
     }
 
+    public void SetDepletionRate(float depletionRate)
+    {
+        this.depletionRate = depletionRate;
+    }
+
     public void DepleteStamina()
     {
-
+        STP = STP * (1 - (0.002f * 1));
+        //STP = 0f;
+        if (STP < 0f)
+        {
+            STP = 0f;
+        }
     }
 }

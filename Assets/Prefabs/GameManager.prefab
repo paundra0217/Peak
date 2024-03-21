@@ -53,6 +53,6 @@ MonoBehaviour:
   startSpawnLocation: {x: -7.5, y: -1}
   respawnLocation: {x: 18.5, y: -1}
   testMode: 0
-  skipIntro: 0
-  useCustomSpawnLocation: 0
-  customSpawnLocation: {x: 340, y: 74}
+  skipIntro: 1
+  useCustomSpawnLocation: 1
+  customSpawnLocation: {x: 18.5, y: -1}

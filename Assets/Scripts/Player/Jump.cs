@@ -18,6 +18,7 @@ public class Jump : MonoBehaviour
     private GroundCheck gc;
     private Animator animator;
     private PlayerHealth playerhealth;
+    private PlayerStamina playerstamina;
 
     private void Awake()
     {
@@ -26,6 +27,7 @@ public class Jump : MonoBehaviour
         gc = transform.Find("GroundCheck").GetComponent<GroundCheck>();
         animator = GetComponent<Animator>();
         playerhealth = GetComponent<PlayerHealth>();
+        playerstamina = GetComponent<PlayerStamina>();
         soarPower = jumpPower * soarMultiplier;
     }
 
@@ -74,6 +76,7 @@ public class Jump : MonoBehaviour
         fallTime = 0;
 
         AudioController.Instance.PlaySFX("Jump");
+        playerstamina.DepleteStamina();
         Vector2 velocity = rb2.velocity;
         velocity.y = jumpPower;
         rb2.velocity = velocity;
@@ -88,6 +91,7 @@ public class Jump : MonoBehaviour
         fallTime = 0;
 
         AudioController.Instance.PlaySFX("Soar");
+        playerstamina.DepleteStamina();
         Vector2 velocity = rb2.velocity;
         velocity.y = soarPower;
         rb2.velocity = velocity;

@@ -1085,8 +1085,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6880435432464927139, guid: 1c4848a2c1582ce48bbbc567ea1a3516, type: 3}
+      propertyPath: customSpawnLocation.x
+      value: -7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880435432464927139, guid: 1c4848a2c1582ce48bbbc567ea1a3516, type: 3}
+      propertyPath: customSpawnLocation.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6880435432464927139, guid: 1c4848a2c1582ce48bbbc567ea1a3516, type: 3}
       propertyPath: useCustomSpawnLocation
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
