@@ -83,11 +83,7 @@ public class PlayerStamina : MonoBehaviour
 
     public void DepleteStamina()
     {
-<<<<<<< Updated upstream
-        STP = STP * (1 - (0.0005f * 1));
-=======
         STP = STP * (1 - (0.00015f * depletionRate));
->>>>>>> Stashed changes
         //STP = 0f;
         if (STP < 0f)
         {
