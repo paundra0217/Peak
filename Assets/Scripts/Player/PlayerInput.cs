@@ -26,6 +26,9 @@ public class PlayerInput : MonoBehaviour
         {
             movement.SetDirection(Input.GetAxisRaw("Horizontal"));
 
+            if (Input.GetKeyDown(KeyCode.E))
+                InteractableManager.Instance.TriggerInteractable();
+
             if (!GameManager.Instance.CompareStatus(GameStatus.INTRO))
             {
                 if (Input.GetKey(KeyCode.Space))
@@ -33,9 +36,6 @@ public class PlayerInput : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.Q))
                     jump.DoSoar();
-
-                if (Input.GetKeyDown(KeyCode.E))
-                    InteractableManager.Instance.TriggerInteractable();
 
                 if (Input.GetKeyDown(KeyCode.R))
                     GameManager.Instance.TestFunction();

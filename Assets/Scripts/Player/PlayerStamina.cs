@@ -12,7 +12,7 @@ public class PlayerStamina : MonoBehaviour
     [SerializeField] private float STP = 100f;
 
     private float defaultSTP;
-    private float depletionRate;
+    private float depletionRate = 1f;
     private float cooldownDamage = 1f;
     private int damageCount = 0;
     private float currentCooldown;
@@ -41,7 +41,7 @@ public class PlayerStamina : MonoBehaviour
         }
         else if (currentCooldown <= 0f)
         {
-            GameManager.Instance.TakeDamage(3);
+            GameManager.Instance.TakeDamage(1);
             damageCount++;
             currentCooldown = cooldownDamage;
         }
@@ -83,7 +83,11 @@ public class PlayerStamina : MonoBehaviour
 
     public void DepleteStamina()
     {
+<<<<<<< Updated upstream
         STP = STP * (1 - (0.0005f * 1));
+=======
+        STP = STP * (1 - (0.00015f * depletionRate));
+>>>>>>> Stashed changes
         //STP = 0f;
         if (STP < 0f)
         {

@@ -49,10 +49,10 @@ MonoBehaviour:
   defaultPlayerHealth: 25
   defaultPlayerSpeed: 6.5
   defaultPlayerStamina: 100
-  defaultPlayerLives: 30
+  defaultPlayerLives: 10
   startSpawnLocation: {x: -7.5, y: -1}
   respawnLocation: {x: 18.5, y: -1}
   testMode: 0
-  skipIntro: 1
-  useCustomSpawnLocation: 1
-  customSpawnLocation: {x: 18.5, y: -1}
+  skipIntro: 0
+  useCustomSpawnLocation: 0
+  customSpawnLocation: {x: 366, y: 393}

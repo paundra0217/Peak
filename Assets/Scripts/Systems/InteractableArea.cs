@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -49,12 +50,14 @@ public class InteractableArea : MonoBehaviour
 
     private void Awake()
     {
-        cg = GameObject.Find("Canvas").GetComponent<CanvasGroup>();
+        if (transform.Find("Canvas") != null)
+            cg = transform.Find("Canvas").GetComponent<CanvasGroup>();
         
         if (InteractableAreaName == null)
             Debug.LogError("Interactable Area Name is not set.");
 
-        cg.alpha = 0f;
+        if (cg != null)
+            cg.alpha = 0f;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -82,7 +85,8 @@ public class InteractableArea : MonoBehaviour
     {
         if (IsAutomatic || InteractableAreaName == null) return;
 
-        cg.alpha = 0f;
+        if (cg != null)
+            cg.alpha = 0f;
 
         if (collision.gameObject.CompareTag("Player"))
             InteractableManager.Instance.ClearInteractableAreaName();
@@ -90,7 +94,17 @@ public class InteractableArea : MonoBehaviour
 
     private void Update()
     {
-        if (!GameManager.Instance.CompareStatus(GameStatus.DEFAULT))
+        if (GameManager.Instance.CompareStatus(GameStatus.DEFAULT) || GameManager.Instance.CompareStatus(GameStatus.INTRO)) return;
+        
+        if (cg != null)
             cg.alpha = 0f;
+        //cg.alpha = 0f;
+        ////print(cg.transform.Find("TxtInteract").GetComponent<TMP_Text>().text);
+        ////print(gameObject);
+        //if (cg != null)
+        //{
+        //    print(gameObject.name);
+        //    print(cg.transform.Find("TxtInteract").GetComponent<TMP_Text>().text);
+        //}
     }
 }

@@ -60,6 +60,8 @@ public class AudioController : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
+        //Debug.LogFormat("{0} {1} {2}", gameObject.active, gameObject.activeSelf, gameObject.activeInHierarchy);
+
         foreach (var a in audios)
         {
             AudioSource aSource = gameObject.AddComponent<AudioSource>();
@@ -133,6 +135,9 @@ public class AudioController : MonoBehaviour
     //{
     //    if (audioTransitioning) return;
 
+    //    //while (!gameObject.activeInHierarchy)
+    //    //    gameObject.SetActive(true);
+        
     //    Debug.LogWarning(gameObject.activeInHierarchy);
 
     //    var audio = SearchAudio(audioName, AudioType.BGM);
@@ -140,7 +145,15 @@ public class AudioController : MonoBehaviour
     //        return;
 
     //    nextAudioPlaying = audio.Source;
+    //    StartCoroutine(CoroutineTest());
     //    StartCoroutine(FadeOut(currentBGMPlaying, 1f));
+    //}
+
+    //IEnumerator CoroutineTest()
+    //{
+    //    print("jasdas");
+
+    //    yield return null;
     //}
 
     public void StopBGM()

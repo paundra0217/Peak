@@ -40,7 +40,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(float hp)
     {
-        if (GameManager.Instance.CompareStatus(GameStatus.IMMORTAL)) return;
+        if (GameManager.Instance.CompareStatus(GameStatus.IMMORTAL) || !GameManager.Instance.CompareStatus(GameStatus.DEFAULT)) return;
 
         HP -= hp;
         animator.SetTrigger("DoDamage");

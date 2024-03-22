@@ -6,7 +6,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
-using static Cinemachine.DocumentationSortingAttribute;
 
 public enum GameStatus
 {
@@ -83,8 +82,6 @@ public class GameManager : MonoBehaviour
     [SerializeField, HideInInspector] private bool useCustomSpawnLocation;
     [SerializeField, HideInInspector] private Vector2 customSpawnLocation = new Vector2(0, 0);
 
-    
-
     private static CinemachineVirtualCamera CinemachineCamera;
     private static CinemachineConfiner2D CinemachineConfiner;
     private static GameObject spawnedPlayer;
@@ -94,9 +91,10 @@ public class GameManager : MonoBehaviour
     private Vector2 cameraReposition = new Vector2(0, 0);
     private static bool actualGameplayStarted;
 
-    private float currentPlayerHealth;
-    private float currentPlayerSpeed;
-    private float currentPlayerStamina;
+    private static float currentPlayerHealth;
+    private static float currentPlayerSpeed;
+    private static float currentPlayerStamina;
+    private static float currentStaminaDepletionRate = 1f;
 
     private string InteractableAreaName;
 
@@ -243,6 +241,8 @@ public class GameManager : MonoBehaviour
         spawnedPlayer.GetComponent<PlayerHealth>().SetDefaultHP(defaultPlayerHealth);
         spawnedPlayer.GetComponent<PlayerHealth>().ResetHealth();
         spawnedPlayer.GetComponent<PlayerStamina>().SetDefaultStamina(defaultPlayerStamina);
+        spawnedPlayer.GetComponent<PlayerStamina>().SetStamina(currentPlayerStamina);
+        spawnedPlayer.GetComponent<PlayerStamina>().SetDepletionRate(currentStaminaDepletionRate);
         spawnedPlayer.GetComponent<PlayerSpeed>().SetSpeed(defaultPlayerSpeed);
         CinemachineCamera = GameObject.Find("Virtual Camera").GetComponent<CinemachineVirtualCamera>();
         CinemachineCamera.Follow = spawnedPlayer.transform;
@@ -265,6 +265,7 @@ public class GameManager : MonoBehaviour
     public void RespawnPlayer()
     {
         print(currentLives);
+        currentPlayerStamina = spawnedPlayer.GetComponent<PlayerStamina>().GetStamina();
         var oldPlayer = spawnedPlayer;
         status = GameStatus.DEFAULT;
         PlayerSpawn();
@@ -337,6 +338,7 @@ public class GameManager : MonoBehaviour
 
     internal void TakeDamage(int hp)
     {
+        if (status != GameStatus.DEFAULT) return;
         spawnedPlayer.GetComponent<PlayerHealth>().TakeDamage(hp);
     }
 
@@ -371,6 +373,7 @@ public class GameManager : MonoBehaviour
                 bounds = CameraBoundsController.Instance.SwitchBoundaries("Bound1");
                 bounds.gameObject.SetActive(true);
                 CinemachineConfiner.m_BoundingShape2D = bounds.GetComponent<Collider2D>();
+                SetSpawnPoint(18.5f, 1f);
                 AudioController.Instance.PlayBGM("Grassland");
                 break;
 
@@ -379,6 +382,8 @@ public class GameManager : MonoBehaviour
                 bounds = CameraBoundsController.Instance.SwitchBoundaries("Bound2");
                 bounds.gameObject.SetActive(true);
                 CinemachineConfiner.m_BoundingShape2D = bounds.GetComponent<Collider2D>();
+                SetSpawnPoint(336.5f, 85f);
+                currentStaminaDepletionRate = 1.5f;
                 AudioController.Instance.PlayBGM("Rockland");
                 break;
 
@@ -387,6 +392,8 @@ public class GameManager : MonoBehaviour
                 bounds = CameraBoundsController.Instance.SwitchBoundaries("Bound3");
                 bounds.gameObject.SetActive(true);
                 CinemachineConfiner.m_BoundingShape2D = bounds.GetComponent<Collider2D>();
+                SetSpawnPoint(314.5f, 227f);
+                currentStaminaDepletionRate = 2f;
                 AudioController.Instance.PlayBGM("Snow");
                 break;
 
@@ -396,9 +403,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void TriggerCredits()
+    public void TriggerPreCredits()
     {
         actualGameplayStarted = false;
+
+        NPCController.Instance.MoveToCreditScene("Serafin");
+        spawnedPlayer.GetComponent<SpriteRenderer>().flipX = true;
+        DialogueManager.Instance.ContinueDialogue();
+        CinemachineCamera.Follow = GameObject.Find("PreCreditTarget").transform;
+    }
+
+    public void TriggerCredits()
+    {
+        Color color = spawnedPlayer.GetComponent<SpriteRenderer>().color;
+        Destroy(spawnedPlayer);
+        NPCController.Instance.ToggleNPC("Serafin", false);
+
+        BackgroundController.Instance.SwitchBackground("Evening");
         CinemachineCamera = GameObject.Find("Virtual Camera").GetComponent<CinemachineVirtualCamera>();
         CinemachineCamera.Follow = GameObject.Find("CreditTarget").transform;
         ChangeStatus(GameStatus.ENDING);
@@ -418,6 +439,8 @@ public class GameManager : MonoBehaviour
                 //AudioController.Instance.PlayBGM("Town");
 
                 currentLives = defaultPlayerLives;
+                currentPlayerStamina = defaultPlayerStamina;
+                currentStaminaDepletionRate = 1f;
 
                 if (status == GameStatus.STARTING)
                 {

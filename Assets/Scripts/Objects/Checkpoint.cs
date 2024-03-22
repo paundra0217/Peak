@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-    [SerializeField] private bool checkpointChecked;
+    private bool checkpointChecked;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -12,7 +12,7 @@ public class Checkpoint : MonoBehaviour
         {
             checkpointChecked = true;
             GameManager.Instance.SetSpawnPoint(transform.position.x, transform.position.y);
-            ChangeAppearance();
+            //ChangeAppearance();
         }
     }
 

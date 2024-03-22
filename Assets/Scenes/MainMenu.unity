@@ -230,10 +230,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 982903451}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 90, y: 64}
+  m_AnchorMin: {x: 0, y: 0.20621431}
+  m_AnchorMax: {x: 1, y: 0.9047859}
+  m_AnchoredPosition: {x: 0, y: -3.5}
+  m_SizeDelta: {x: 90, y: 83}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &31086379
 MonoBehaviour:
@@ -284,7 +284,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 37.05
+  m_fontSize: 36.85
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -320,7 +320,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 37.935547, z: 0, w: 44.832916}
+  m_margin: {x: 44.94104, y: 37.935547, z: 45.31244, w: 44.832916}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1208,10 +1208,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 238802838}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 90, y: 66}
+  m_AnchorMin: {x: 0, y: 0.192}
+  m_AnchorMax: {x: 1, y: 0.92}
+  m_AnchoredPosition: {x: 0, y: -3.5}
+  m_SizeDelta: {x: 90, y: 83}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1840856997
 MonoBehaviour:
@@ -1260,7 +1260,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 38.3
+  m_fontSize: 38.1
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1296,7 +1296,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 37.935547, z: 0, w: 44.832916}
+  m_margin: {x: 44.71695, y: 37.935547, z: 45.301514, w: 44.832916}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1464,10 +1464,8 @@ MonoBehaviour:
     onlyTriggeredOnce: 0
     isAlreadyTriggered: 0
     continueDialogueAfterTransition: 1
+    PauseHalfway: 0
     EventDuringTransition:
-      m_PersistentCalls:
-        m_Calls: []
-    EventNearEndTransition:
       m_PersistentCalls:
         m_Calls: []
     EventAfterTransition:
@@ -1482,10 +1480,8 @@ MonoBehaviour:
     onlyTriggeredOnce: 1
     isAlreadyTriggered: 0
     continueDialogueAfterTransition: 0
+    PauseHalfway: 0
     EventDuringTransition:
-      m_PersistentCalls:
-        m_Calls: []
-    EventNearEndTransition:
       m_PersistentCalls:
         m_Calls: []
     EventAfterTransition:

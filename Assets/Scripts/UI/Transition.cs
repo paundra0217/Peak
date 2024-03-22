@@ -5,6 +5,8 @@ using TMPro;
 using UnityEngine.Events;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using UnityEditor.PackageManager;
+using Unity.VisualScripting;
 
 [System.Serializable]
 public class TransitionSet
@@ -15,8 +17,8 @@ public class TransitionSet
     public bool onlyTriggeredOnce;
     public bool isAlreadyTriggered;
     public bool continueDialogueAfterTransition;
+    public bool PauseHalfway;
     public UnityEvent EventDuringTransition;
-    public UnityEvent EventNearEndTransition;
     public UnityEvent EventAfterTransition;
     public UnityEvent EventAfterTransitionAnimation;
 }
@@ -29,6 +31,8 @@ public class Transition : MonoBehaviour
     private TMP_Text transitionText;
     private Animator animator;
     private string nextScene;
+    private bool isBlack;
+    private bool PausedHalfway;
     
     private static Transition _instance;
     public static Transition Instance
@@ -54,6 +58,8 @@ public class Transition : MonoBehaviour
 
     public void DoTransition(string transitionSetName)
     {
+        if (PausedHalfway) return;
+
         selectedSet = transitionSets.FirstOrDefault(t => t.setName == transitionSetName);
         if (selectedSet == null)
         {
@@ -71,7 +77,17 @@ public class Transition : MonoBehaviour
             selectedSet.isAlreadyTriggered = true;
 
         GameManager.Instance.ChangeStatus(GameStatus.TRANSITION);
-        StartCoroutine("ProcessTransition");
+        if (selectedSet.PauseHalfway)
+        {
+            gameObject.SetActive(true);
+            isBlack = true;
+
+            StartCoroutine(ProcessSingleFade());
+        }
+        else
+        {
+            StartCoroutine("ProcessTransition");
+        }
     }
 
     public void DoGameOver()
@@ -92,9 +108,6 @@ public class Transition : MonoBehaviour
 
         transitionText.text = "";
 
-        if (selectedSet.EventNearEndTransition.GetPersistentEventCount() > 0)
-            selectedSet.EventNearEndTransition.Invoke();
-
         if (selectedSet.EventAfterTransition.GetPersistentEventCount() > 0)
             selectedSet.EventAfterTransition.Invoke();
 
@@ -107,6 +120,51 @@ public class Transition : MonoBehaviour
             selectedSet.EventAfterTransitionAnimation.Invoke();
         else
             GameManager.Instance.ChangeStatus(GameStatus.DEFAULT);
+    }
+
+    public void ContinueTransition()
+    {
+        if (!PausedHalfway) return;
+
+        StartCoroutine("ProcessSingleFade");
+    }
+
+    IEnumerator ProcessSingleFade()
+    {
+        if (PausedHalfway)
+        {
+            if (selectedSet.EventAfterTransition.GetPersistentEventCount() > 0)
+                selectedSet.EventAfterTransition.Invoke();
+        }
+
+        animator.SetTrigger("TriggerTransition");
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+
+        PausedHalfway = !PausedHalfway;
+
+        if (PausedHalfway)
+        {
+            if (selectedSet.EventDuringTransition.GetPersistentEventCount() > 0)
+                selectedSet.EventDuringTransition.Invoke();
+        }
+        else
+        {
+            if (selectedSet.continueDialogueAfterTransition)
+                DialogueManager.Instance.ContinueDialogue();
+            else if (selectedSet.EventAfterTransitionAnimation.GetPersistentEventCount() > 0)
+                selectedSet.EventAfterTransitionAnimation.Invoke();
+            else
+                GameManager.Instance.ChangeStatus(GameStatus.DEFAULT);
+        }
+
+        if (!isBlack)
+        {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            isBlack = false;
+        }
     }
 
     public void SwitchScene(string nextScene)
