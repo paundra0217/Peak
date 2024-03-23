@@ -1437,6 +1437,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 560155022387274948, guid: 2a3628c563d79c4499874bfcbb2c1e34, type: 3}
+      propertyPath: mixer
+      value: 
+      objectReference: {fileID: 24100000, guid: 26b3bca468eda78409b812327c1976b0, type: 2}
     - target: {fileID: 3506961716720514302, guid: 2a3628c563d79c4499874bfcbb2c1e34, type: 3}
       propertyPath: m_Name
       value: AudioController

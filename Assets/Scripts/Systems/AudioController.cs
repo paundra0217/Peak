@@ -24,6 +24,7 @@ class AudioObject
 
 public class AudioController : MonoBehaviour
 {
+    [SerializeField] private AudioMixer mixer;
     [SerializeField] private AudioMixerGroup BGMGroup;
     [SerializeField] private AudioMixerGroup SFXGroup;
     //[SerializeField] private AudioObject[] BGM;
@@ -227,6 +228,14 @@ public class AudioController : MonoBehaviour
             return;
 
         audio.Source.Stop();
+    }
+
+    public void SetLowpass()
+    {
+        bool isPaused = GameManager.Instance.CompareStatus(GameStatus.PAUSE);
+
+        if (isPaused) mixer.SetFloat("LowpassFreq", 500f);
+        else mixer.SetFloat("LowpassFreq", 22000f);
     }
 
     //IEnumerator FadeOut(AudioSource audioSource, float FadeTime)

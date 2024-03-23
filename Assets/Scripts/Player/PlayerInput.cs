@@ -39,7 +39,15 @@ public class PlayerInput : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.R))
                     GameManager.Instance.TestFunction();
+
+                if (Input.GetKeyDown(KeyCode.Escape))
+                    GameManager.Instance.TogglePause();
             }
+        }
+        else if (GameManager.Instance.CompareStatus(GameStatus.PAUSE))
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+                GameManager.Instance.TogglePause();
         }
     }
 }

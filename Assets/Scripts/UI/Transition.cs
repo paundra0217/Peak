@@ -84,7 +84,7 @@ public class Transition : MonoBehaviour
         }
         else
         {
-            StartCoroutine("ProcessTransition");
+            StartCoroutine("ProcessTransitionOpen");
         }
     }
 
@@ -93,15 +93,38 @@ public class Transition : MonoBehaviour
         StartCoroutine("ProcessGameOverScreen");
     }
 
-    IEnumerator ProcessTransition()
+    IEnumerator ProcessTransitionOpen()
     {
         animator.SetTrigger("TriggerTransition");
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
 
-        transitionText.text = selectedSet.message;
+        transitionText.text = "";
         if (selectedSet.EventDuringTransition.GetPersistentEventCount() > 0)
             selectedSet.EventDuringTransition.Invoke();
 
+        if (selectedSet.message == "")
+        {
+            StartCoroutine("ProcessTransitionClose");
+        }
+        else
+        {
+            StartCoroutine("AnimateText");
+        }
+    }
+
+    IEnumerator AnimateText()
+    {
+        foreach (char c in selectedSet.message.ToCharArray())
+        {
+            transitionText.text += c;
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        StartCoroutine("ProcessTransitionClose");
+    }
+
+    IEnumerator ProcessTransitionClose()
+    {
         yield return new WaitForSeconds(selectedSet.duration);
 
         transitionText.text = "";

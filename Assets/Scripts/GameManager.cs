@@ -221,6 +221,13 @@ public class GameManager : MonoBehaviour
 
     public void ExitToMainMenu()
     {
+        status = GameStatus.LOBBY;
+        actualGameplayStarted = false;
+
+        Time.timeScale = 1f;
+        IsPaused = false;
+        AudioController.Instance.SetLowpass();
+
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -426,6 +433,26 @@ public class GameManager : MonoBehaviour
     public void TeleportToStartingPoint()
     {
         TeleportPlayer(18.5f, -1f);
+    }
+
+    public void TogglePause()
+    {
+        if (IsPaused)
+        {
+            IsPaused = false;
+
+            status = GameStatus.DEFAULT;
+            Time.timeScale = 1f;
+        }
+        else
+        {
+            IsPaused = true;
+
+            status = GameStatus.PAUSE;
+            Time.timeScale = 0f;
+        }
+
+        AudioController.Instance.SetLowpass();
     }
 
     public void TriggerPreCredits()
