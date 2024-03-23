@@ -16,4 +16,5 @@ public class DialogueContents : MonoBehaviour
     public List<Dialogue> dialogue;
     public UnityEvent afterDialogueEvent;
     public string nextDialoguePart;
+    public bool isATip;
 }

@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+
+#if UNITY_EDITOR
+
+using UnityEditor;
 
 [CustomEditor(typeof(InteractableArea), true), CanEditMultipleObjects]
 public class InteractableAreaEditor : Editor
@@ -38,6 +41,7 @@ public class InteractableAreaEditor : Editor
 
     }
 }
+#endif
 
 public class InteractableArea : MonoBehaviour
 {

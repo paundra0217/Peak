@@ -2,28 +2,15 @@ using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using TMPro;
 
-public enum GameStatus
-{
-    DEFAULT,
-    IMMORTAL,
-    LOBBY,
-    STARTING,
-    RETRYING,
-    SETTINGS,
-    INTRO,
-    INGAME,
-    DIALOGUE,
-    TRANSITION, //jika lg dalam animasi anything (ga cuma transition)
-    SELECTION,
-    PAUSE,
-    DEATH,
-    ENDING
-}
+
+#if UNITY_EDITOR
+
+using UnityEditor;
 
 [CustomEditor(typeof(GameManager), true), CanEditMultipleObjects]
 public class GameManagerEditor : Editor
@@ -65,6 +52,26 @@ public class GameManagerEditor : Editor
     }
 }
 
+#endif
+
+public enum GameStatus
+{
+    DEFAULT,
+    IMMORTAL,
+    LOBBY,
+    STARTING,
+    RETRYING,
+    SETTINGS,
+    INTRO,
+    INGAME,
+    DIALOGUE,
+    TRANSITION, //jika lg dalam animasi anything (ga cuma transition)
+    SELECTION,
+    PAUSE,
+    DEATH,
+    ENDING
+}
+
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject player;
@@ -78,6 +85,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Vector2 startSpawnLocation = new Vector2(0, 0);
     [SerializeField] private Vector2 respawnLocation = new Vector2(0, 0);
     [SerializeField] private bool testMode = false;
+    [SerializeField] private string gameVersion;
     [SerializeField, HideInInspector] private bool skipIntro;
     [SerializeField, HideInInspector] private bool useCustomSpawnLocation;
     [SerializeField, HideInInspector] private Vector2 customSpawnLocation = new Vector2(0, 0);
@@ -229,6 +237,7 @@ public class GameManager : MonoBehaviour
         {
             SwitchLevelBackground(1);
             PlayerSpawn();
+            NPCController.Instance.HideNPC("Serafin");
         }
 
         status = GameStatus.DEFAULT;
@@ -250,15 +259,19 @@ public class GameManager : MonoBehaviour
 
     public void PlayerDeath()
     {
+        actualGameplayStarted = false;
+
         CinemachineCamera.Follow = null;
         print("Player dead");
         Destroy(spawnedPlayer);
-        print(spawnedPlayer);
+        spawnedPlayer = null;
         InteractableManager.Instance.TriggerGameOver();
     }
 
     public void KillPlayer()
     {
+        if (!actualGameplayStarted || status != GameStatus.DEFAULT) return;
+
         spawnedPlayer.GetComponent<PlayerHealth>().KillPlayer();
     }
 
@@ -275,6 +288,11 @@ public class GameManager : MonoBehaviour
     public void MovePlayer()
     {
         spawnedPlayer.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 10f);
+    }
+
+    public void TeleportPlayer(float x, float y)
+    {
+        spawnedPlayer.transform.position = new Vector2(x, y);
     }
 
     public void CameraStopFollow()
@@ -338,7 +356,8 @@ public class GameManager : MonoBehaviour
 
     internal void TakeDamage(int hp)
     {
-        if (status != GameStatus.DEFAULT) return;
+        if (!actualGameplayStarted || status != GameStatus.DEFAULT) return;
+
         spawnedPlayer.GetComponent<PlayerHealth>().TakeDamage(hp);
     }
 
@@ -373,15 +392,16 @@ public class GameManager : MonoBehaviour
                 bounds = CameraBoundsController.Instance.SwitchBoundaries("Bound1");
                 bounds.gameObject.SetActive(true);
                 CinemachineConfiner.m_BoundingShape2D = bounds.GetComponent<Collider2D>();
-                SetSpawnPoint(18.5f, 1f);
+                SetSpawnPoint(18.5f, -1f);
                 AudioController.Instance.PlayBGM("Grassland");
                 break;
 
             case 2:
-                BackgroundController.Instance.SwitchBackground("Evening");
+                BackgroundController.Instance.SwitchBackground("Cave");
                 bounds = CameraBoundsController.Instance.SwitchBoundaries("Bound2");
                 bounds.gameObject.SetActive(true);
                 CinemachineConfiner.m_BoundingShape2D = bounds.GetComponent<Collider2D>();
+
                 SetSpawnPoint(336.5f, 85f);
                 currentStaminaDepletionRate = 1.5f;
                 AudioController.Instance.PlayBGM("Rockland");
@@ -401,6 +421,11 @@ public class GameManager : MonoBehaviour
                 Debug.LogWarning("Switch background option not valid");
                 return;
         }
+    }
+
+    public void TeleportToStartingPoint()
+    {
+        TeleportPlayer(18.5f, -1f);
     }
 
     public void TriggerPreCredits()
@@ -446,9 +471,11 @@ public class GameManager : MonoBehaviour
                 {
                     spawnLocation = startSpawnLocation;
                     ChangeStatus(GameStatus.INTRO);
+                    DialogueManager.Instance.StartDialogue("D1");
                 }
                 else if (status == GameStatus.RETRYING)
                 {
+                    SetSpawnPoint(18.5f, -1f);
                     StartActualGameplay();
                     return;
                 }
@@ -461,6 +488,10 @@ public class GameManager : MonoBehaviour
                 Cursor.visible = true;
                 ChangeStatus(GameStatus.LOBBY);
                 AudioController.Instance.PlayBGM("Main");
+                if (GameObject.Find("Canvas/TxtVersion"))
+                {
+                    GameObject.Find("Canvas/TxtVersion").gameObject.GetComponent<TMP_Text>().text = "V" + gameVersion;
+                }
                 break;
 
             case "GameOver":

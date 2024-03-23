@@ -41,7 +41,7 @@ public class PlayerStamina : MonoBehaviour
         }
         else if (currentCooldown <= 0f)
         {
-            GameManager.Instance.TakeDamage(1);
+            GameManager.Instance.TakeDamage(3);
             damageCount++;
             currentCooldown = cooldownDamage;
         }
@@ -83,7 +83,7 @@ public class PlayerStamina : MonoBehaviour
 
     public void DepleteStamina()
     {
-        STP = STP * (1 - (0.00015f * depletionRate));
+        STP = STP * (1 - (0.001f * depletionRate));
         //STP = 0f;
         if (STP < 0f)
         {

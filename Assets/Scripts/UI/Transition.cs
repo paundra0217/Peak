@@ -5,8 +5,6 @@ using TMPro;
 using UnityEngine.Events;
 using System.Linq;
 using UnityEngine.SceneManagement;
-using UnityEditor.PackageManager;
-using Unity.VisualScripting;
 
 [System.Serializable]
 public class TransitionSet

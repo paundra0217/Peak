@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -67,6 +68,10 @@ public class DialogueManager : MonoBehaviour
         Debug.LogFormat("Starting Dialogue {0}", DialoguePart);
 
         DialogueBox.SetActive(true);
+
+        if (selectedDialogue.isATip) DialogueBox.GetComponent<Image>().color = Color.yellow;
+        else DialogueBox.GetComponent<Image>().color = Color.white;
+
         StartCoroutine("DialogueEnter");
     }
 
