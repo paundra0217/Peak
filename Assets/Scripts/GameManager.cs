@@ -452,6 +452,8 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0f;
         }
 
+        Cursor.visible = IsPaused;
+
         AudioController.Instance.SetLowpass();
     }
 
