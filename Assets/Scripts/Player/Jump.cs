@@ -1,10 +1,9 @@
-using UnityEngine;
+    using UnityEngine;
 
 public class Jump : MonoBehaviour
 {
     [SerializeField] private float jumpPower = 15f;
     [SerializeField] private float soarMultiplier = 1.6f;
-    [SerializeField] private float minimumFallTime = 0.5f;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask PlatformLayer;
 
@@ -33,7 +32,8 @@ public class Jump : MonoBehaviour
 
     private void Update()
     {
-        HandleFallDamage();
+        //HandleFallDamage();
+        currentlyGrounded = gc.IsGrounded();
 
         if (currentlyGrounded && alreadyJumped) alreadyJumped = false;
         if (currentlyGrounded && alreadySoared) alreadySoared = false;
@@ -46,27 +46,25 @@ public class Jump : MonoBehaviour
         animator.SetBool("IsGrounded", currentlyGrounded);
     }
 
-    private void HandleFallDamage()
-    {
-        bool previouslyGrounded = currentlyGrounded;
-        currentlyGrounded = gc.IsGrounded();
+    //private void HandleFallDamage()
+    //{
+    //    bool previouslyGrounded = currentlyGrounded;
+    //    currentlyGrounded = gc.IsGrounded();
 
-        if (rb2.velocity.y < 0 && !currentlyGrounded)
-            fallTime += Time.deltaTime;
+    //    if (rb2.velocity.y < -2f && !currentlyGrounded)
+    //        fallTime += Time.deltaTime;
 
-        if (!previouslyGrounded && currentlyGrounded)
-        {
-            bool doDamage = (fallTime > minimumFallTime) && !alreadySoared;
+    //    if (!previouslyGrounded && currentlyGrounded)
+    //    {
+    //        if (!alreadySoared)
+    //        {
+    //            CalculateDamage(fallTime);
+    //            AudioController.Instance.PlaySFX("Land");
+    //        }
 
-            if (doDamage)
-            {
-                CalculateDamage(fallTime);
-                AudioController.Instance.PlaySFX("Land");
-            }
-
-            fallTime = 0;
-        }
-    }
+    //        fallTime = 0;
+    //    }
+    //}
 
     public void DoJump()
     {
@@ -97,14 +95,14 @@ public class Jump : MonoBehaviour
         rb2.velocity = velocity;
     }
 
-    private void CalculateDamage(float velocityRate)
-    {
-        if (alreadySoared) return;
-        float damageTaken = (velocityRate - minimumFallTime) / 1f * 150f;
-        print(damageTaken);
+    //private void CalculateDamage(float fallTime)
+    //{
+    //    if (alreadySoared) return;
+    //    float damageTaken = fallTime / 0.1f * 150f;
+    //    print(damageTaken);
 
-        playerhealth.TakeDamage(damageTaken);
-    }
+    //    playerhealth.TakeDamage(damageTaken);
+    //}
 
     //public bool IsGrounded()
     //{

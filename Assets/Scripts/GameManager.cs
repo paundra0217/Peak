@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering.PostProcessing;
 using TMPro;
 
 
@@ -252,6 +253,8 @@ public class GameManager : MonoBehaviour
 
     public void PlayerSpawn()
     {
+        if (useCustomSpawnLocation) spawnLocation = customSpawnLocation;
+
         print("SpawnPlayer");
         spawnedPlayer = Instantiate(player, new Vector3(spawnLocation.x, spawnLocation.y, 0), gameObject.transform.rotation);
         spawnedPlayer.GetComponent<PlayerHealth>().SetDefaultHP(defaultPlayerHealth);
@@ -355,10 +358,10 @@ public class GameManager : MonoBehaviour
         return spawnedPlayer.GetComponent<PlayerStamina>().GetMaxStamina();
     }
 
-    public void TakeLive()
+    public void TakeLive(int lives = 1)
     {
-        print("Lives taken");
-        currentLives--;
+        Debug.LogFormat("Lives taken: {0}", lives);
+        currentLives -= lives;
     }
 
     internal void TakeDamage(int hp)
@@ -410,7 +413,7 @@ public class GameManager : MonoBehaviour
                 CinemachineConfiner.m_BoundingShape2D = bounds.GetComponent<Collider2D>();
 
                 SetSpawnPoint(336.5f, 85f);
-                currentStaminaDepletionRate = 1.5f;
+                currentStaminaDepletionRate = 1.35f;
                 AudioController.Instance.PlayBGM("Rockland");
                 break;
 
@@ -420,7 +423,7 @@ public class GameManager : MonoBehaviour
                 bounds.gameObject.SetActive(true);
                 CinemachineConfiner.m_BoundingShape2D = bounds.GetComponent<Collider2D>();
                 SetSpawnPoint(314.5f, 227f);
-                currentStaminaDepletionRate = 2f;
+                currentStaminaDepletionRate = 1.75f;
                 AudioController.Instance.PlayBGM("Snow");
                 break;
 
@@ -452,9 +455,11 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0f;
         }
 
-        Cursor.visible = IsPaused;
+        PostProcessVolume ppvol = Camera.main.gameObject.GetComponent<PostProcessVolume>();
 
         AudioController.Instance.SetLowpass();
+        Cursor.visible = IsPaused;
+        ppvol.enabled = IsPaused;
     }
 
     public void TriggerPreCredits()

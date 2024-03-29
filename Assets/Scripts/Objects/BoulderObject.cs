@@ -6,6 +6,7 @@ public class BoulderObject : MonoBehaviour
 {
     private Rigidbody2D rb2;
     private bool alreadyTriggered;
+    [SerializeField] private float delay;
 
     // Start is called before the first frame update
     void Awake()
@@ -14,12 +15,17 @@ public class BoulderObject : MonoBehaviour
         //rb2.simulated = true;
     }
 
+    private void Update()
+    {
+        if (!alreadyTriggered)
+        {
+
+        }
+    }
+
     public void TriggerBoulder()
     {
-        if (!alreadyTriggered) alreadyTriggered = true;
-        else return;
-
-        rb2.simulated = true;
+        alreadyTriggered = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

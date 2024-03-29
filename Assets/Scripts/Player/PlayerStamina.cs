@@ -26,30 +26,30 @@ public class PlayerStamina : MonoBehaviour
         //STP = 50f;
     }
 
-    private void Update()
-    {
-        if (STP > 0f) return;
-        if (damageCount > 30) return;
-        if (GameManager.Instance.CompareStatus(GameStatus.DEATH)) return;
+    //private void Update()
+    //{
+    //    if (STP > 0f) return;
+    //    if (damageCount > 30) return;
+    //    if (GameManager.Instance.CompareStatus(GameStatus.DEATH)) return;
 
-        print(currentCooldown);
+    //    print(currentCooldown);
         
-        if (damageCount == 30)
-        {
-            GameManager.Instance.KillPlayer();
-            damageCount++;
-        }
-        else if (currentCooldown <= 0f)
-        {
-            GameManager.Instance.TakeDamage(3);
-            damageCount++;
-            currentCooldown = cooldownDamage;
-        }
-        else
-        {
-            currentCooldown -= Time.deltaTime;
-        }
-    }
+    //    if (damageCount == 30)
+    //    {
+    //        GameManager.Instance.KillPlayer();
+    //        damageCount++;
+    //    }
+    //    else if (currentCooldown <= 0f)
+    //    {
+    //        GameManager.Instance.TakeDamage(3);
+    //        damageCount++;
+    //        currentCooldown = cooldownDamage;
+    //    }
+    //    else
+    //    {
+    //        currentCooldown -= Time.deltaTime;
+    //    }
+    //}
 
     public void SetStamina(float stp)
     {
@@ -88,6 +88,8 @@ public class PlayerStamina : MonoBehaviour
         if (STP < 0f)
         {
             STP = 0f;
+            GameManager.Instance.TakeLive(GameManager.Instance.GetLives() - 1);
+            GameManager.Instance.KillPlayer();
         }
     }
 }
