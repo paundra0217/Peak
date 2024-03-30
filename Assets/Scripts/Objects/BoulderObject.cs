@@ -17,9 +17,10 @@ public class BoulderObject : MonoBehaviour
 
     private void Update()
     {
-        if (!alreadyTriggered)
+        if (alreadyTriggered)
         {
-
+            if (delay <= 0) rb2.simulated = true;
+            else delay -= Time.deltaTime;
         }
     }
 

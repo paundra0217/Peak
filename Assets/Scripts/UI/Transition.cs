@@ -75,11 +75,11 @@ public class Transition : MonoBehaviour
             selectedSet.isAlreadyTriggered = true;
 
         GameManager.Instance.ChangeStatus(GameStatus.TRANSITION);
+        //gameObject.SetActive(true);
+
         if (selectedSet.PauseHalfway)
         {
-            gameObject.SetActive(true);
             isBlack = true;
-
             StartCoroutine(ProcessSingleFade());
         }
         else
@@ -180,7 +180,7 @@ public class Transition : MonoBehaviour
 
         if (!isBlack)
         {
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
         }
         else
         {
