@@ -70,7 +70,9 @@ public enum GameStatus
     SELECTION,
     PAUSE,
     DEATH,
-    ENDING
+    GAMEOVER,
+    ENDING,
+    ENDSCREEN
 }
 
 public class GameManager : MonoBehaviour
@@ -87,6 +89,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Vector2 respawnLocation = new Vector2(0, 0);
     [SerializeField] private bool testMode = false;
     [SerializeField] private string gameVersion;
+    [SerializeField] private static bool isUsingController = true;
     [SerializeField, HideInInspector] private bool skipIntro;
     [SerializeField, HideInInspector] private bool useCustomSpawnLocation;
     [SerializeField, HideInInspector] private Vector2 customSpawnLocation = new Vector2(0, 0);
@@ -104,6 +107,10 @@ public class GameManager : MonoBehaviour
     private static float currentPlayerSpeed;
     private static float currentPlayerStamina;
     private static float currentStaminaDepletionRate = 1f;
+
+    private static int numberOfJumps = 0;
+    private static int numberOfSoars = 0;
+    private static float timePlayed;
 
     private string InteractableAreaName;
 
@@ -135,6 +142,8 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         SceneManager.activeSceneChanged += SceneChanged;
+
+        Cursor.visible = !isUsingController;
     }
 
     private void Start()
@@ -151,6 +160,22 @@ public class GameManager : MonoBehaviour
         }
 
         print(status);
+    }
+
+    private void Update()
+    {
+        if (Input.anyKeyDown || Input.GetAxisRaw("HorizontalController") != 0 || Input.GetAxisRaw("VerticalController") != 0 || Input.GetAxisRaw("Horizontal") != 0)
+            isUsingController = DetectController();
+
+        if (
+            status != GameStatus.LOBBY || 
+            status != GameStatus.INTRO || 
+            status != GameStatus.PAUSE ||
+            status != GameStatus.ENDING
+            ) 
+        {
+            timePlayed += Time.deltaTime;
+        }
     }
 
     public GameStatus GetStatus()
@@ -171,6 +196,16 @@ public class GameManager : MonoBehaviour
     public void TestFunction()
     {
         Debug.Log("Received called in GameManager");
+    }
+
+    public void SetUsingController(bool value)
+    {
+        isUsingController = value;
+    }
+
+    public bool GetIsUsingController()
+    {
+        return isUsingController;
     }
 
     public void StartGame()
@@ -371,9 +406,46 @@ public class GameManager : MonoBehaviour
         spawnedPlayer.GetComponent<PlayerHealth>().TakeDamage(hp);
     }
 
+    public int GetMaxLives()
+    {
+        return defaultPlayerLives;
+    }
+
     public void SetSpawnPoint(float x, float y)
     {
         spawnLocation = new Vector2(x, y);
+    }
+
+    public void CountJump()
+    {
+        numberOfJumps += 1;
+        Debug.LogFormat("Jumps counted: {0}", numberOfJumps);
+    }
+
+    public int GetTotalJumps()
+    {
+        return numberOfJumps;
+    }
+
+    public void CountSoar()
+    {
+        numberOfSoars += 1;
+        Debug.LogFormat("Soars counted: {0}", numberOfSoars);
+    }
+
+    public int GetTotalSoars()
+    {
+        return numberOfSoars;
+    }
+
+    public float GetTotalPlaytime()
+    {
+        return timePlayed;
+    }
+
+    public float GetLeftStamina()
+    {
+        return currentPlayerStamina;
     }
 
     public void SwitchLevelBackground(int level)
@@ -464,6 +536,7 @@ public class GameManager : MonoBehaviour
 
     public void TriggerPreCredits()
     {
+        currentPlayerStamina = spawnedPlayer.GetComponent<PlayerStamina>().GetStamina();
         actualGameplayStarted = false;
 
         NPCController.Instance.MoveToCreditScene("Serafin");
@@ -501,6 +574,10 @@ public class GameManager : MonoBehaviour
                 currentPlayerStamina = defaultPlayerStamina;
                 currentStaminaDepletionRate = 1f;
 
+                timePlayed = 0f;
+                numberOfJumps = 0;
+                numberOfSoars = 0;
+
                 if (status == GameStatus.STARTING)
                 {
                     spawnLocation = startSpawnLocation;
@@ -529,8 +606,51 @@ public class GameManager : MonoBehaviour
                 break;
 
             case "GameOver":
+                status = GameStatus.GAMEOVER;
+                Cursor.visible = true;
+                break;
+
+            case "PlayResult":
+                status = GameStatus.ENDSCREEN;
                 Cursor.visible = true;
                 break;
         }
+    }
+
+    private bool DetectController()
+    {
+        bool usingController =
+            Input.GetKeyDown(KeyCode.JoystickButton0) ||
+            Input.GetKeyDown(KeyCode.JoystickButton1) ||
+            Input.GetKeyDown(KeyCode.JoystickButton2) ||
+            Input.GetKeyDown(KeyCode.JoystickButton3) ||
+            Input.GetKeyDown(KeyCode.JoystickButton4) ||
+            Input.GetKeyDown(KeyCode.JoystickButton5) ||
+            Input.GetKeyDown(KeyCode.JoystickButton6) ||
+            Input.GetKeyDown(KeyCode.JoystickButton7) ||
+            Input.GetKeyDown(KeyCode.JoystickButton8) ||
+            Input.GetKeyDown(KeyCode.JoystickButton9) ||
+            Input.GetKeyDown(KeyCode.JoystickButton10) ||
+            Input.GetKeyDown(KeyCode.JoystickButton11) ||
+            Input.GetKeyDown(KeyCode.JoystickButton12) ||
+            Input.GetKeyDown(KeyCode.JoystickButton13) ||
+            Input.GetKeyDown(KeyCode.JoystickButton14) ||
+            Input.GetKeyDown(KeyCode.JoystickButton15) ||
+            Input.GetKeyDown(KeyCode.JoystickButton16) ||
+            Input.GetKeyDown(KeyCode.JoystickButton17) ||
+            Input.GetKeyDown(KeyCode.JoystickButton18) ||
+            Input.GetKeyDown(KeyCode.JoystickButton19) ||
+            Input.GetAxisRaw("HorizontalController") != 0 ||
+            Input.GetAxisRaw("VerticalController") != 0;
+
+        if (
+            status == GameStatus.LOBBY || 
+            status == GameStatus.PAUSE || 
+            status == GameStatus.ENDSCREEN ||
+            status == GameStatus.GAMEOVER
+        )
+            Cursor.visible = !usingController;
+
+        return usingController;
     }
 }

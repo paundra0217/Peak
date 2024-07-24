@@ -1,0 +1,102 @@
+{
+    "name": "Player",
+    "maps": [
+        {
+            "name": "PlayerMovement",
+            "id": "f8a7cfb7-4706-47f4-96d3-b3b93401b15d",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "e2f6d5ac-552a-4785-8b2f-5624117492cc",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "f75ffb00-8962-436e-8892-c4084f4eebf8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Soar",
+                    "type": "Button",
+                    "id": "4a0199b2-04f1-4cb2-bb1f-968fe9f9df62",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "29097e2c-1813-4fca-8a69-3ce1071e52a9",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "06d3e47f-08e8-456d-be63-6a8044dc74a8",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3768c585-7651-4c3d-a500-b679369fdb29",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Soar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Enviroment",
+            "id": "6e2e5006-b2d2-4766-9543-348bc566a675",
+            "actions": [
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "ae8f72e7-1319-4f0b-9004-084402efb745",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e86da908-b2b9-4133-8884-d5530b5f85ea",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

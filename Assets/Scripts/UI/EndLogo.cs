@@ -13,6 +13,6 @@ public class EndLogo : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
 
-        Transition.Instance.SwitchScene("MainMenu");
+        Transition.Instance.SwitchScene("PlayResult");
     }
 }

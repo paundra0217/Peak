@@ -1,4 +1,11 @@
-    using UnityEngine;
+using UnityEngine;
+
+public enum JumpState
+{
+    IDLE,
+    JUMP,
+    SOAR
+}
 
 public class Jump : MonoBehaviour
 {
@@ -8,8 +15,9 @@ public class Jump : MonoBehaviour
     [SerializeField] private LayerMask PlatformLayer;
 
     private float soarPower;
-    private bool alreadyJumped = false;
-    private bool alreadySoared = false;
+    private JumpState state;
+    //private bool alreadyJumped = false;
+    //private bool alreadySoared = false;
     private bool currentlyGrounded;
     private float fallTime;
     private Rigidbody2D rb2;
@@ -34,11 +42,11 @@ public class Jump : MonoBehaviour
     {
         //HandleFallDamage();
         currentlyGrounded = gc.IsGrounded();
+        if (currentlyGrounded) state = JumpState.IDLE;
+        //if (currentlyGrounded && alreadyJumped) alreadyJumped = false;
+        //if (currentlyGrounded && alreadySoared) alreadySoared = false;
 
-        if (currentlyGrounded && alreadyJumped) alreadyJumped = false;
-        if (currentlyGrounded && alreadySoared) alreadySoared = false;
-
-        if (alreadySoared)
+        if (state == JumpState.SOAR)
             animator.SetBool("IsSoaring", rb2.velocity.y > 0);
         else
             animator.SetBool("IsJumping", rb2.velocity.y > 0);
@@ -68,31 +76,53 @@ public class Jump : MonoBehaviour
 
     public void DoJump()
     {
-        if (rb2.velocity.y < 0 || alreadyJumped) return;
+        if (rb2.velocity.y < 0 || state != JumpState.IDLE) return;
 
-        alreadyJumped = true;
+        if (rb2.velocity.y <= 1f)
+        {
+            playerstamina.DepleteStamina();
+            print(playerstamina.GetStamina());
+            GameManager.Instance.CountJump();
+        }
         fallTime = 0;
 
         AudioController.Instance.PlaySFX("Jump");
-        playerstamina.DepleteStamina();
         Vector2 velocity = rb2.velocity;
         velocity.y = jumpPower;
         rb2.velocity = velocity;
+
+        state = JumpState.JUMP;
+
+        CheckIsGrounded();
     }
 
     public void DoSoar()
     {
-        if (currentlyGrounded || alreadySoared || !alreadyJumped) return;
-        animator.SetBool("IsJumping", false);
+        if (state != JumpState.JUMP) return;
 
-        alreadySoared = true;
+        animator.SetBool("IsJumping", false);
+        if (state != JumpState.SOAR)
+        {
+            playerstamina.DepleteStamina();
+            print(playerstamina.GetStamina());
+            GameManager.Instance.CountSoar();
+        }
         fallTime = 0;
 
         AudioController.Instance.PlaySFX("Soar");
-        playerstamina.DepleteStamina();
         Vector2 velocity = rb2.velocity;
         velocity.y = soarPower;
         rb2.velocity = velocity;
+
+        state = JumpState.SOAR;
+
+        CheckIsGrounded();
+    }
+
+    private void CheckIsGrounded()
+    {
+        currentlyGrounded = gc.IsGrounded();
+        if (currentlyGrounded) state = JumpState.IDLE;
     }
 
     //private void CalculateDamage(float fallTime)
