@@ -47,7 +47,7 @@ Developers:
 ```
 ├── Peak                                # In this Folder, containing all the Unity project files, to be opened by a Unity Editor
    ├── Assets                           # In this Folder, it contains all of our code, assets, scenes, etc.
-      ├── Animation                     # Contains all the animations for the game.
+      ├── Animation                     # Contains all the animations for the game, including animation clip and animatior.
       ├── Audio                         # Contains all the audio for the game, and audio mixer.
       ├── Material                      # Contains all the material for the game. Inside are for sprite with GPU instancing, as well as physics material.
       ├── Palettes                      # Contains all the palettes for use in gridmap inside the scene.
