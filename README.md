@@ -4,7 +4,11 @@
 </p>
 
 ## 🔴About
-**Peak** is a 2D platformer game that tells a story about a young man who is trying to climb to the top of a mountain. Your task is to try to climb to the top of the mountain while explore many different places and environments through the mountain and avoid obstacles while maintaining stamina and health.
+**Peak** is a 2D pixel art platformer in where you need to reach the top in order to fulfill the dreams of an ordinary boy and uncover the secrets behind Seraphim Mountain. The story follows an ordinary boy named Satria going on his quest to conquer Seraphim mountain and find the meaning of his life. On his journey, he met with Seraphin a beautiful girl residing in the town. 
+
+The Main Mechanics on this game is soar where Satria is able to jump higher after his jumps and the limited amount of stamina that you have to manage in order to reach the top without getting too exhausted.
+
+Join Satria in his journey to reach the peak and search for his reason to live.
 
 ## ⬇️Download Game
 Itch.io : https://bgdc.itch.io/peak
