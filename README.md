@@ -26,8 +26,8 @@ Developers:
 - Vincent Pho Wijaya (Team Manager, Design, and Story)
 - Ariq Bimo Nurputro (Supervisor)
 - **Paundra Amirtha Tanto (Programming)**
-- Bagas Hidayat (Artist)
-- Nathania Joscelind (Artist and Animation)
+- Bagas Hidayat (Art)
+- Nathania Joscelind (Art and Animation)
 - Nicholas Van Lukman (Sound)
 
 ##  📜Scripts
