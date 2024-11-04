@@ -20,7 +20,7 @@ Itch.io : https://bgdc.itch.io/peak
 As the sole programmer on this 2D game project, I was responsible for the entire development pipeline. This included implementing game mechanics from the designer's perspective, creating interactive environments, and developing the player character's movement and abilities. I integrated various assets, such as sprites and sound effects, to bring the game world to life. Through meticulous testing and debugging, I delivered a polished and enjoyable gaming experience.
 
 ## 📋 Project Info and Developers
-This project using Unity 2022.3.12f1
+This project was made using Unity 2022.3.12f1
 
 Developers:
 - Vincent Pho Wijaya (Team Manager, Design, and Story)
